@@ -22,6 +22,7 @@ package com.dss886.nForumSDK.util;
  */
 public class Constant {
 	public static final String HOST_BYR = "http://api.byr.cn/";
+	public static final String HOST_BYR_TEST = "http://nforum.byr.edu.cn/byr/api/";
 	public static final String HOST_TDRD = "http://napi.tdrd.org/";
 	
 	public static final String GUEST_USERNAME = "guest";
