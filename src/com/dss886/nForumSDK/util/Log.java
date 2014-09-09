@@ -22,51 +22,58 @@ import java.util.Date;
 
 /**
  * 该类封装了一些调试用输出日志的方法
+ * 公开发布时Log开关应为False
  * @author dss886
  * @since 2014-9-7
  */
 public class Log {
 	
+	private static final boolean LOG_TOGGLE_D = true;
+	private static final boolean LOG_TOGGLE_E = true;
+	
 	public static void d(String tag, String msg){
-		int len = tag.length();
-		String str = "";
-		for(int i = 0; i < 15 - len; i ++){
-			str = str + " ";
+		if(LOG_TOGGLE_D){
+			int len = tag.length();
+			String str = "";
+			for(int i = 0; i < 15 - len; i ++){
+				str = str + " ";
+			}
+			
+			int len2 = msg.length();
+			String str2 = "";
+			for(int i = 0; i < 15 - len2; i ++){
+				str2 = str2 + " ";
+			}
+			
+			System.out.println(tag + str + " | " + msg);
 		}
-		
-		int len2 = msg.length();
-		String str2 = "";
-		for(int i = 0; i < 15 - len2; i ++){
-			str2 = str2 + " ";
-		}
-		
-		System.out.println(tag + str + " | " + msg);
 	}
 	
 	public static void e(String tag, String msg, StackTraceElement[] stackTraces){
-		try {
-			StringBuilder sb = new StringBuilder();
-			sb.append("标签：" + tag + "\n");
-			sb.append("时间：" + getSystemTime() + "\n");
-			sb.append("错误详情：" + msg + "\n");
-			
-			if(stackTraces != null){
-				for(StackTraceElement starckTrace: stackTraces){
-					sb.append(starckTrace.toString() + "\n");
+		if(LOG_TOGGLE_E){
+			try {
+				StringBuilder sb = new StringBuilder();
+				sb.append("标签：" + tag + "\n");
+				sb.append("时间：" + getSystemTime() + "\n");
+				sb.append("错误详情：" + msg + "\n");
+				
+				if(stackTraces != null){
+					for(StackTraceElement starckTrace: stackTraces){
+						sb.append(starckTrace.toString() + "\n");
+					}
 				}
+				
+				for(int i = 0; i < 50; i ++){
+					sb.append("-");
+				}
+				sb.append("\n");
+				
+				FileWriter writer = new FileWriter("./log.txt", true);
+	            writer.write(sb.toString());
+	            writer.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
 			}
-			
-			for(int i = 0; i < 50; i ++){
-				sb.append("-");
-			}
-			sb.append("\n");
-			
-			FileWriter writer = new FileWriter("./log.txt", true);
-            writer.write(sb.toString());
-            writer.close();
-			
-		} catch (IOException ex) {
-			ex.printStackTrace();
 		}
 	}
 	
