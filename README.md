@@ -7,4 +7,6 @@ nForumSDK
 
 ### 关于本项目
 
-本项目是由[dss886](http://www.dss886.com)发起的开源项目，欢迎Fork及发起Pull Request。如有任何问题，请给我发送邮件dss886@gmail.com，或在北邮人论坛上@我：dss886。
+本项目是由[dss886](http://www.dss886.com)发起的开源项目，欢迎Fork及发起Pull Request。
+
+如有任何问题，请给我发送邮件dss886@gmail.com，或在北邮人论坛上给我发送站内信：dss886。
