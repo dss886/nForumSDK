@@ -50,7 +50,7 @@ public class WidgetService {
 	
 	public JSONObject getWidgetTop10() throws ClientProtocolException, JSONException,
 		NForumException, IOException {
-		String url = host + "widget/top10" + returnFormat + appkey;
+		String url = host + "widget/topten" + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
 		return getMethod.getJSON();
 	}
