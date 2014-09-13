@@ -31,6 +31,11 @@ public class Article {
 	public int group_id;
 	/** 该文章回复文章的id */
 	public int reply_id;
+	/** 
+	 * 十大中参与id的数量
+	 * 此属性仅存在于/widget/top10中
+	 *  */
+	public String id_count;
 	/** 文章标记 分别是m g ; b u o 8 */
 	public String flag;
 	/** 
@@ -120,6 +125,7 @@ public class Article {
         article.id = jsonObject.optInt("id", -1);
         article.group_id = jsonObject.optInt("group_id", -1);
         article.reply_id = jsonObject.optInt("reply_id", -1);
+        article.id_count = jsonObject.optString("id_count", "");
         article.flag = jsonObject.optString("flag", "");
         article.position = jsonObject.optInt("position", -1);
         article.is_top = jsonObject.optBoolean("is_top", false);
