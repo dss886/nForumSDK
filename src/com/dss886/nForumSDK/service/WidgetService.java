@@ -20,10 +20,10 @@ import java.io.IOException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.dss886.nForumSDK.http.GetMethod;
 import com.dss886.nForumSDK.http.NForumException;
+import com.dss886.nForumSDK.model.Widget;
 
 /**
  * 该类封装了Wigdet接口，
@@ -48,24 +48,48 @@ public class WidgetService {
 		this.auth = auth;
 	}
 	
-	public JSONObject getWidgetTop10() throws ClientProtocolException, JSONException,
+	/**
+	 * 获取十大热门话题的信息
+	 * @return widget元数据
+	 * @throws ClientProtocolException
+	 * @throws JSONException
+	 * @throws NForumException
+	 * @throws IOException
+	 */
+	public Widget getWidgetTopten() throws ClientProtocolException, JSONException,
 		NForumException, IOException {
 		String url = host + "widget/topten" + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
-		return getMethod.getJSON();
+		return Widget.parse(getMethod.getJSON());
 	}
 	
-	public JSONObject getWidgetRecommend() throws ClientProtocolException, JSONException,
+	/** 获取推荐文章的信息
+	 * @return widget元数据
+	 * @throws ClientProtocolException
+	 * @throws JSONException
+	 * @throws NForumException
+	 * @throws IOException
+	 */
+	public Widget getWidgetRecommend() throws ClientProtocolException, JSONException,
 		NForumException, IOException {
 		String url = host + "widget/recommend" + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
-		return getMethod.getJSON();
+		return Widget.parse(getMethod.getJSON());
 	}
 	
-	public JSONObject getWidgetSection(int sectionName) throws ClientProtocolException,
+	/**
+	 * 获取分区热门话题的信息
+	 * @param sectionName 合法的分区名称
+	 * @return widget元数据
+	 * @throws ClientProtocolException
+	 * @throws JSONException
+	 * @throws NForumException
+	 * @throws IOException
+	 */
+	public Widget getWidgetSection(int sectionName) throws ClientProtocolException,
 		JSONException, NForumException, IOException {
 		String url = host + "widget/section-" + sectionName + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
-		return getMethod.getJSON();
+		return Widget.parse(getMethod.getJSON());
 	}
 }

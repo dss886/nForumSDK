@@ -16,45 +16,50 @@
 package com.dss886.nForumSDK.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * 附件结构体
+ * Widget结构体
  * @author dss886
  * @since 2014-9-7
  */
-public class Attachment {
+public class Widget {
+
+	/** widget标识 */
+	public String name;
+	/** widget标题 */
+	public String title;
+	/** 上次修改时间 */
+	public int time;
+	/** 十大热门话题所包含的文章元数据数组 */
+	public List<Article> articles = new ArrayList<Article>();
 	
-	/** 文件列表 */
-	public ArrayList<File> file = new ArrayList<File>();
-	/** 剩余空间大小 */
-	public String remain_space;
-	/** 剩余附件个数 */
-	public int remain_count;
-	
-	public static Attachment parse(String jsonString) {
+	public static Widget parse(String jsonString) {
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
-            return Attachment.parse(jsonObject);
+            return Widget.parse(jsonObject);
         } catch (JSONException e) {
-            return null;
+            e.printStackTrace();
         }
+        
+        return null;
     }
 	
-	public static Attachment parse(JSONObject jsonObject) {
+	public static Widget parse(JSONObject jsonObject) {
         if (null == jsonObject) {
             return null;
         }
-        Attachment att = new Attachment();
-        JSONArray jsonFiles = jsonObject.optJSONArray("file");
-        for(int i = 0; i < jsonFiles.length(); i++){
-        	att.file.add(File.parse(jsonFiles.optJSONObject(i)));
+        Widget widget = new Widget();
+        widget.name = jsonObject.optString("name", "");
+        widget.title = jsonObject.optString("title", "");
+        JSONArray jsonArticles = jsonObject.optJSONArray("article");
+        for(int i = 0; i < jsonArticles.length(); i++){
+        	widget.articles.add(Article.parse(jsonArticles.optJSONObject(i)));
 		}
-        att.remain_space = jsonObject.optString("remain_space", "");
-        att.remain_count = jsonObject.optInt("remain_count", -1);
-        return att;
+        return widget;
 	}
 }
