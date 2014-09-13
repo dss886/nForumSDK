@@ -40,10 +40,8 @@ public class Attachment {
             JSONObject jsonObject = new JSONObject(jsonString);
             return Attachment.parse(jsonObject);
         } catch (JSONException e) {
-            e.printStackTrace();
+            return null;
         }
-        
-        return null;
     }
 	
 	public static Attachment parse(JSONObject jsonObject) {

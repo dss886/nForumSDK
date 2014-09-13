@@ -92,10 +92,10 @@ public class User {
             JSONObject jsonObject = new JSONObject(jsonString);
             return User.parse(jsonObject);
         } catch (JSONException e) {
-            e.printStackTrace();
+        	User user = new User();
+        	user.id = jsonString;
+        	return user;
         }
-        
-        return null;
     }
 	
 	public static User parse(JSONObject jsonObject) {
