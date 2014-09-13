@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2010-2013 dss886
+ * Copyright (C) 2010-2014 dss886
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ package com.dss886.nForumSDK.util;
  */
 public class Constant {
 	public static final String HOST_BYR = "http://api.byr.cn/";
+	public static final String HOST_BYR_TEST = "http://nforum.byr.edu.cn/byr/api/";
 	public static final String HOST_TDRD = "http://napi.tdrd.org/";
 	
 	public static final String GUEST_USERNAME = "guest";

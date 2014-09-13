@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2013 dss886
+ * Copyright (C) 2010-2014 dss886
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
  */
 package com.dss886.nForumSDK.util;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -27,24 +25,29 @@ import java.util.Date;
  */
 public class Log {
 	
+	private static final boolean LOG_TOGGLE_D = true;
+	private static final boolean LOG_TOGGLE_E = true;
+	
 	public static void d(String tag, String msg){
-		int len = tag.length();
-		String str = "";
-		for(int i = 0; i < 15 - len; i ++){
-			str = str + " ";
+		if(LOG_TOGGLE_D){
+			int len = tag.length();
+			String str = "";
+			for(int i = 0; i < 15 - len; i ++){
+				str = str + " ";
+			}
+			
+			int len2 = msg.length();
+			String str2 = "";
+			for(int i = 0; i < 15 - len2; i ++){
+				str2 = str2 + " ";
+			}
+			
+			System.out.println(tag + str + " | " + msg);
 		}
-		
-		int len2 = msg.length();
-		String str2 = "";
-		for(int i = 0; i < 15 - len2; i ++){
-			str2 = str2 + " ";
-		}
-		
-		System.out.println(tag + str + " | " + msg);
 	}
 	
 	public static void e(String tag, String msg, StackTraceElement[] stackTraces){
-		try {
+		if(LOG_TOGGLE_E){
 			StringBuilder sb = new StringBuilder();
 			sb.append("标签：" + tag + "\n");
 			sb.append("时间：" + getSystemTime() + "\n");
@@ -61,12 +64,7 @@ public class Log {
 			}
 			sb.append("\n");
 			
-			FileWriter writer = new FileWriter("./log.txt", true);
-            writer.write(sb.toString());
-            writer.close();
-			
-		} catch (IOException ex) {
-			ex.printStackTrace();
+            System.err.println(sb);
 		}
 	}
 	

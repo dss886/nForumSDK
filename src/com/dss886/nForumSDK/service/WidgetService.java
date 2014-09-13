@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2013 dss886
+ * Copyright (C) 2010-2014 dss886
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ public class WidgetService {
 	
 	public JSONObject getWidgetTop10() throws ClientProtocolException, JSONException,
 		NForumException, IOException {
-		String url = host + "widget/top10" + returnFormat + appkey;
+		String url = host + "widget/topten" + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
 		return getMethod.getJSON();
 	}
