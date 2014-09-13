@@ -229,7 +229,7 @@ public class ArticleService {
 	public Article deleteArticle(String boardName, int id) throws ClientProtocolException,
 		JSONException, NForumException, IOException {
 		String url = host + "article/" + boardName + "/delete/" + id + returnFormat + appkey;
-		PostMethod postMethod = new PostMethod(httpClient, auth, url, null);
+		PostMethod postMethod = new PostMethod(httpClient, auth, url, new ArrayList<NameValuePair>());
 		return Article.parse(postMethod.postJSON());
 	}
 }

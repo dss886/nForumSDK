@@ -15,14 +15,18 @@
  */
 package com.dss886.nForumSDK.service;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
 import org.json.JSONException;
 
 import com.dss886.nForumSDK.http.GetMethod;
 import com.dss886.nForumSDK.http.NForumException;
+import com.dss886.nForumSDK.http.PostMethod;
 import com.dss886.nForumSDK.model.Attachment;
 
 /**
@@ -51,7 +55,8 @@ public class AttachmentService {
 	/**
 	 * 获取附件信息
 	 * @param name 合法的版面名称
-	 * @param id 可选，如果指定文章id则返回该文章的附件列表，否则返回当前用户上传文件的列表，当前用户的附件列表在下一次发文时会附加至新文章中
+	 * @param id 可选，如果指定文章id则返回该文章的附件列表，
+	 * 否则(id=-1)返回当前用户上传文件的列表，当前用户的附件列表在下一次发文时会附加至新文章中
 	 * @return 返回指定文章的附件列表
 	 * @throws ClientProtocolException
 	 * @throws JSONException
@@ -60,15 +65,38 @@ public class AttachmentService {
 	 */
 	public Attachment getAttachment(String name, int id) throws 
 		ClientProtocolException, JSONException, NForumException, IOException {
-		String url = host + "attachment/" + name + "/" + id + returnFormat + appkey;
+		String url;
+		if(id == -1){
+			url = host + "attachment/" + name + returnFormat + appkey;
+		}
+		url = host + "attachment/" + name + "/" + id + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
 		return Attachment.parse(getMethod.getJSON());
 	}
 	
-//	public Attachment addAttachment(String boardName, int id) throws ClientProtocolException, JSONException,
-//		NForumException, NForumHttpException, IOException {
-//		String url = host + "attachment/" + boardName + "/post"  + returnFormat + appkey;
-//	}
-	//TODO
+	/**
+	 * 如果指定文章id则向该文章添加新附加，否则（id=-1）向当前用户的附件列表添加新附件
+	 * @param boardName 合法的版面名称
+	 * @param id 文章或主题id
+	 * @param file 需上传的附件
+	 * @return 用户空间/文章附件元数据
+	 * @throws ClientProtocolException
+	 * @throws JSONException
+	 * @throws NForumException
+	 * @throws IOException
+	 */
+	public Attachment addAttachment(String boardName, int id, File file) throws ClientProtocolException, JSONException,
+		NForumException, IOException {
+		String url;
+		if(id == -1){
+			url = host + "attachment/" + boardName + "/add" + returnFormat + appkey;
+		}
+		url = host + "attachment/" + boardName + "/add" + "/" + id + returnFormat + appkey;
+		FileBody fileBody = new FileBody(file);
+		MultipartEntity mEntity = new MultipartEntity();
+		mEntity.addPart("file", fileBody);
+		PostMethod postMethod = new PostMethod(httpClient, auth, url, mEntity);
+		return Attachment.parse(postMethod.postJSON());
+	}
 	
 }

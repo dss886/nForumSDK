@@ -12,15 +12,15 @@ import com.dss886.nForumSDK.util.Constant;
 import com.dss886.nForumSDK.util.Log;
 
 public class Top10Demo {
-	public static void main(String... args){
-		NForumSDK nSDK = new NForumSDK(Constant.HOST_TDRD, "guest", "");
-		WidgetService widgetService = nSDK.getWidgetService();
-		try {
-			JSONObject top10 = widgetService.getWidgetTop10();
-			Log.d("top10", top10.toString());
-		} catch (JSONException | NForumException
-				| IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String... args){
+//		NForumSDK nSDK = new NForumSDK(Constant.HOST_TDRD, "guest", "");
+//		WidgetService widgetService = nSDK.getWidgetService();
+//		try {
+//			JSONObject top10 = widgetService.getWidgetTop10();
+//			Log.d("top10", top10.toString());
+//		} catch (JSONException | NForumException
+//				| IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 }

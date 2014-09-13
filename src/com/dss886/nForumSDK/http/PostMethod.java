@@ -16,6 +16,7 @@
 package com.dss886.nForumSDK.http;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.apache.http.Header;
@@ -26,6 +27,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.GzipDecompressingEntity;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,21 +44,29 @@ public class PostMethod {
 	private DefaultHttpClient httpClient;
 	private HttpPost httpPost;
 	private HttpResponse response;
-	private List<NameValuePair> params;
 	
 	public PostMethod(DefaultHttpClient httpClient, String auth, String url, List<NameValuePair> params){
 		this.httpClient = httpClient;
-		this.params = params;
 		httpPost = new HttpPost(url);
+		try {
+			httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		httpPost.setHeader("Accept-Encoding", "gzip, deflate");
+		httpPost.setHeader("Authorization", "Basic " + auth);
+	}
+	
+	public PostMethod(DefaultHttpClient httpClient, String auth, String url, MultipartEntity  mEntity){
+		this.httpClient = httpClient;
+		httpPost = new HttpPost(url);
+		httpPost.setEntity(mEntity);
 		httpPost.setHeader("Accept-Encoding", "gzip, deflate");
 		httpPost.setHeader("Authorization", "Basic " + auth);
 	}
 	
 	public JSONObject postJSON() throws JSONException, NForumException, 
 		ClientProtocolException, IOException{
-		if (params != null) {
-			httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-		}
 		response = httpClient.execute(httpPost);
 		int statusCode = response.getStatusLine().getStatusCode();
 		if (statusCode != 200)
