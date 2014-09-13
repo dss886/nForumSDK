@@ -17,9 +17,13 @@ package com.dss886.nForumSDK.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.json.JSONException;
@@ -96,6 +100,30 @@ public class AttachmentService {
 		MultipartEntity mEntity = new MultipartEntity();
 		mEntity.addPart("file", fileBody);
 		PostMethod postMethod = new PostMethod(httpClient, auth, url, mEntity);
+		return Attachment.parse(postMethod.postJSON());
+	}
+	
+	/**
+	 * 如果指定文章id则从该文章中删除附加，否则（id=-1）从当前用户的附件列表删除附件
+	 * @param boardName 合法的版面名称
+	 * @param id 文章或主题id
+	 * @param file 需删除附件名
+	 * @return 用户空间/文章附件元数据
+	 * @throws ClientProtocolException
+	 * @throws JSONException
+	 * @throws NForumException
+	 * @throws IOException
+	 */
+	public Attachment delAttachment(String boardName, int id, String file) throws ClientProtocolException, JSONException,
+		NForumException, IOException {
+		String url;
+		if(id == -1){
+			url = host + "attachment/" + boardName + "/delete" + returnFormat + appkey;
+		}
+		url = host + "attachment/" + boardName + "/delete" + "/" + id + returnFormat + appkey;
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("name", file));
+		PostMethod postMethod = new PostMethod(httpClient, auth, url, params);
 		return Attachment.parse(postMethod.postJSON());
 	}
 	
