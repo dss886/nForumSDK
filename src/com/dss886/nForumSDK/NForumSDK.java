@@ -23,6 +23,7 @@ import org.apache.http.params.HttpParams;
 import com.dss886.nForumSDK.service.ArticleService;
 import com.dss886.nForumSDK.service.AttachmentService;
 import com.dss886.nForumSDK.service.BoardService;
+import com.dss886.nForumSDK.service.MailService;
 import com.dss886.nForumSDK.service.SectionService;
 import com.dss886.nForumSDK.service.UserService;
 import com.dss886.nForumSDK.service.WidgetService;
@@ -95,6 +96,27 @@ public class NForumSDK {
 	}
 	
 	/**
+	 * @return 用户接口封装对象
+	 */
+	public UserService getUserService(){
+		return new UserService(httpClient, host, returnFormat, appkey, auth);
+	}
+	
+	/**
+	 * @return 分区接口封装对象
+	 */
+	public SectionService getSectionService(){
+		return new SectionService(httpClient, host, returnFormat, appkey, auth);
+	}
+	
+	/**
+	 * @return 版面接口封装对象
+	 */
+	public BoardService getBoardService(){
+		return new BoardService(httpClient, host, returnFormat, appkey, auth);
+	}
+	
+	/**
 	 * @return 文章接口封装对象
 	 */
 	public ArticleService getArticleService(){
@@ -109,24 +131,10 @@ public class NForumSDK {
 	}
 	
 	/**
-	 * @return 版面接口封装对象
+	 * @return 信件接口封装对象
 	 */
-	public BoardService getBoardService(){
-		return new BoardService(httpClient, host, returnFormat, appkey, auth);
-	}
-	
-	/**
-	 * @return 分区接口封装对象
-	 */
-	public SectionService getSectionService(){
-		return new SectionService(httpClient, host, returnFormat, appkey, auth);
-	}
-	
-	/**
-	 * @return 用户接口封装对象
-	 */
-	public UserService getUserService(){
-		return new UserService(httpClient, host, returnFormat, appkey, auth);
+	public MailService getMailService(){
+		return new MailService(httpClient, host, returnFormat, appkey, auth);
 	}
 	
 	/**

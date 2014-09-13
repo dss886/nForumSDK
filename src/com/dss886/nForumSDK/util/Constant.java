@@ -31,4 +31,9 @@ public class Constant {
 	public static final String EXCEPTION_NETWORK = "网络异常";
 	
 	public static final String RETRUN_FORMAT_JSON = ".json";
+	
+	public static final String MAILBOX_INBOX = "inbox";
+	public static final String MAILBOX_OUTBOX = "outbox";
+	public static final String MAILBOX_DELETED = "deleted";
+	
 }
