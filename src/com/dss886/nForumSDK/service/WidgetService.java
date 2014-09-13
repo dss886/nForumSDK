@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import com.dss886.nForumSDK.http.GetMethod;
 import com.dss886.nForumSDK.http.NForumException;
+import com.dss886.nForumSDK.model.Widget;
 
 /**
  * 该类封装了Wigdet接口，
@@ -48,24 +49,24 @@ public class WidgetService {
 		this.auth = auth;
 	}
 	
-	public JSONObject getWidgetTop10() throws ClientProtocolException, JSONException,
+	public Widget getWidgetTopten() throws ClientProtocolException, JSONException,
 		NForumException, IOException {
 		String url = host + "widget/topten" + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
-		return getMethod.getJSON();
+		return Widget.parse(getMethod.getJSON());
 	}
 	
-	public JSONObject getWidgetRecommend() throws ClientProtocolException, JSONException,
+	public Widget getWidgetRecommend() throws ClientProtocolException, JSONException,
 		NForumException, IOException {
 		String url = host + "widget/recommend" + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
-		return getMethod.getJSON();
+		return Widget.parse(getMethod.getJSON());
 	}
 	
-	public JSONObject getWidgetSection(int sectionName) throws ClientProtocolException,
+	public Widget getWidgetSection(int sectionName) throws ClientProtocolException,
 		JSONException, NForumException, IOException {
 		String url = host + "widget/section-" + sectionName + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
-		return getMethod.getJSON();
+		return Widget.parse(getMethod.getJSON());
 	}
 }
