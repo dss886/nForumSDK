@@ -11,7 +11,7 @@ import com.dss886.nForumSDK.util.Constant;
 
 public class testDemo {
 	public static void main(String... args){
-		NForumSDK nSDK = new NForumSDK(Constant.HOST_BYR, "78e223c052793f0b", "guest", "");
+		NForumSDK nSDK = new NForumSDK(Constant.HOST_BYR, "", "guest", "");
 		MailService service = nSDK.getMailService();
 		try {
 			service.sendMail("dss886", "test", "test2", 0, 0);

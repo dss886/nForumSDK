@@ -39,4 +39,10 @@ public class Constant {
 	public static final String REFER_AT = "at";
 	public static final String REFER_REPLY = "reply";
 	
+	public static final String VOTE_ME = "me";
+	public static final String VOTE_JOIN = "join";
+	public static final String VOTE_LIST = "list";
+	public static final String VOTE_NEW = "new";
+	public static final String VOTE_HOT = "hot";
+	public static final String VOTE_ALL = "all";
 }
