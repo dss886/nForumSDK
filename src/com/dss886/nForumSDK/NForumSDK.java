@@ -22,6 +22,7 @@ import org.apache.http.params.HttpParams;
 
 import com.dss886.nForumSDK.service.ArticleService;
 import com.dss886.nForumSDK.service.AttachmentService;
+import com.dss886.nForumSDK.service.BlacklistService;
 import com.dss886.nForumSDK.service.BoardService;
 import com.dss886.nForumSDK.service.FavouriteService;
 import com.dss886.nForumSDK.service.MailService;
@@ -29,6 +30,7 @@ import com.dss886.nForumSDK.service.ReferService;
 import com.dss886.nForumSDK.service.SearchService;
 import com.dss886.nForumSDK.service.SectionService;
 import com.dss886.nForumSDK.service.UserService;
+import com.dss886.nForumSDK.service.VoteService;
 import com.dss886.nForumSDK.service.WidgetService;
 import com.dss886.nForumSDK.util.Constant;
 
@@ -166,6 +168,20 @@ public class NForumSDK {
 	 */
 	public WidgetService getWidgetService(){
 		return new WidgetService(httpClient, host, returnFormat, appkey, auth);
+	}
+	
+	/**
+	 * @return 黑名单接口封装对象
+	 */
+	public BlacklistService getBlacklistService(){
+		return new BlacklistService(httpClient, host, returnFormat, appkey, auth);
+	}
+	
+	/**
+	 * @return Widget接口封装对象
+	 */
+	public VoteService getVoteService(){
+		return new VoteService(httpClient, host, returnFormat, appkey, auth);
 	}
 	
 }
