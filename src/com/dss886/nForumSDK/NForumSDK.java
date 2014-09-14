@@ -23,7 +23,10 @@ import org.apache.http.params.HttpParams;
 import com.dss886.nForumSDK.service.ArticleService;
 import com.dss886.nForumSDK.service.AttachmentService;
 import com.dss886.nForumSDK.service.BoardService;
+import com.dss886.nForumSDK.service.FavouriteService;
 import com.dss886.nForumSDK.service.MailService;
+import com.dss886.nForumSDK.service.ReferService;
+import com.dss886.nForumSDK.service.SearchService;
 import com.dss886.nForumSDK.service.SectionService;
 import com.dss886.nForumSDK.service.UserService;
 import com.dss886.nForumSDK.service.WidgetService;
@@ -135,6 +138,27 @@ public class NForumSDK {
 	 */
 	public MailService getMailService(){
 		return new MailService(httpClient, host, returnFormat, appkey, auth);
+	}
+	
+	/**
+	 * @return 收藏夹接口封装对象
+	 */
+	public FavouriteService getFavouriteService(){
+		return new FavouriteService(httpClient, host, returnFormat, appkey, auth);
+	}
+	
+	/**
+	 * @return 提醒接口封装对象
+	 */
+	public ReferService getReferService(){
+		return new ReferService(httpClient, host, returnFormat, appkey, auth);
+	}
+	
+	/**
+	 * @return 搜索接口封装对象
+	 */
+	public SearchService getSearchService(){
+		return new SearchService(httpClient, host, returnFormat, appkey, auth);
 	}
 	
 	/**

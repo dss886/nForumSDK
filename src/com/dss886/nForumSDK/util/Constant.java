@@ -36,4 +36,7 @@ public class Constant {
 	public static final String MAILBOX_OUTBOX = "outbox";
 	public static final String MAILBOX_DELETED = "deleted";
 	
+	public static final String REFER_AT = "at";
+	public static final String REFER_REPLY = "reply";
+	
 }
