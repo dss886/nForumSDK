@@ -30,6 +30,7 @@ import com.dss886.nForumSDK.http.GetMethod;
 import com.dss886.nForumSDK.http.NForumException;
 import com.dss886.nForumSDK.http.PostMethod;
 import com.dss886.nForumSDK.model.Article;
+import com.dss886.nForumSDK.model.Threads;
 
 /**
  * 该类封装了文章和主题接口
@@ -89,7 +90,7 @@ public class ArticleService {
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Article getThreads(String boardName, int id, String au, int count, int page) throws 
+	public Threads getThreads(String boardName, int id, String au, int count, int page) throws 
 		ClientProtocolException, JSONException, NForumException, IOException {
 		String url = host + "threads/" + boardName + "/"+ id + returnFormat + appkey
 				+ "&count=" + count +"&page=" + page;
@@ -103,7 +104,7 @@ public class ArticleService {
 			url = url + "&page=" + page ;
 		}
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
-		return Article.parse(getMethod.getJSON());
+		return Threads.parse(getMethod.getJSON());
 	}
 	
 	/**

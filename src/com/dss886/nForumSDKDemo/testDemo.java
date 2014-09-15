@@ -9,6 +9,7 @@ import com.dss886.nForumSDK.http.NForumException;
 import com.dss886.nForumSDK.model.Article;
 import com.dss886.nForumSDK.model.Board;
 import com.dss886.nForumSDK.model.Section;
+import com.dss886.nForumSDK.model.Threads;
 import com.dss886.nForumSDK.model.User;
 import com.dss886.nForumSDK.service.ArticleService;
 import com.dss886.nForumSDK.service.AttachmentService;
@@ -58,7 +59,7 @@ public class testDemo {
 			
 			Article article;
 			article = articleService.getArticle("BBSHELP", 2, 2);
-			article = articleService.getThreads("BBSHELP", 2, null, 10, 1);
+			Threads threads = articleService.getThreads("BBSHELP", 2, null, 10, 1);
 			
 			mailService.sendMail("dss886", "test", "test2", 0, 0);
 		} catch (JSONException | NForumException | IOException e) {
