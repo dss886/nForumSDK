@@ -27,7 +27,7 @@ import org.json.JSONObject;
  * @author dss886
  * @since 2014-9-7
  */
-public class Favourite {
+public class Favorite {
 
 	/** 
 	 * 收藏夹级数，顶层收藏夹level为0
@@ -45,16 +45,16 @@ public class Favourite {
 	 * 	 */
 	public int position;
 	/** 该层收藏夹包含的自定义目录的数组，数组元素为收藏夹元数据 */
-	public List<Favourite> sub_favorite = new ArrayList<Favourite>();
+	public List<Favorite> sub_favorite = new ArrayList<Favorite>();
 	/** 该层收藏夹包含的分区的数组，数组元素为分区元数据 */
 	public List<Section> sections = new ArrayList<Section>();
 	/** 该层收藏夹包含的版面的数组，数组元素为版面元数据 */
 	public List<Board> boards = new ArrayList<Board>();
 	
-	public static Favourite parse(String jsonString) {
+	public static Favorite parse(String jsonString) {
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
-            return Favourite.parse(jsonObject);
+            return Favorite.parse(jsonObject);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -62,26 +62,32 @@ public class Favourite {
         return null;
     }
 	
-	public static Favourite parse(JSONObject jsonObject) {
+	public static Favorite parse(JSONObject jsonObject) {
         if (null == jsonObject) {
             return null;
         }
-        Favourite favourite = new Favourite();
-        favourite.level = jsonObject.optInt("level", -1);
-        favourite.description = jsonObject.optString("description", "");
-        favourite.position = jsonObject.optInt("position", -1);
-        JSONArray jsonSubFavourite = jsonObject.optJSONArray("sub_favorite");
-        for(int i = 0; i < jsonSubFavourite.length(); i++){
-        	favourite.sub_favorite.add(Favourite.parse(jsonSubFavourite.optJSONObject(i)));
-		}
+        Favorite fav = new Favorite();
+        fav.level = jsonObject.optInt("level", -1);
+        fav.description = jsonObject.optString("description", "");
+        fav.position = jsonObject.optInt("position", -1);
+        JSONArray jsonSubFavorite = jsonObject.optJSONArray("sub_favorite");
+        if(null != jsonSubFavorite){
+        	for(int i = 0; i < jsonSubFavorite.length(); i++){
+        		fav.sub_favorite.add(Favorite.parse(jsonSubFavorite.optJSONObject(i)));
+        	}
+        }
         JSONArray jsonSections = jsonObject.optJSONArray("section");
-        for(int i = 0; i < jsonSections.length(); i++){
-        	favourite.sections.add(Section.parse(jsonSections.optJSONObject(i)));
-		}
+        if(null != jsonSections){
+        	for(int i = 0; i < jsonSections.length(); i++){
+        		fav.sections.add(Section.parse(jsonSections.optJSONObject(i)));
+        	}
+        }
         JSONArray jsonBoards = jsonObject.optJSONArray("board");
-        for(int i = 0; i < jsonBoards.length(); i++){
-        	favourite.boards.add(Board.parse(jsonBoards.optJSONObject(i)));
-		}
-        return favourite;
+        if(null != jsonBoards){
+        	for(int i = 0; i < jsonBoards.length(); i++){
+        		fav.boards.add(Board.parse(jsonBoards.optJSONObject(i)));
+        	}
+        }
+        return fav;
 	}
 }

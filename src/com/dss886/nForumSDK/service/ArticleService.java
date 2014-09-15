@@ -179,7 +179,7 @@ public class ArticleService {
 	 * 转载指定文章
 	 * @param boardName 合法的版面名称
 	 * @param id 文章或主题id
-	 * @param target 合法的用户id
+	 * @param target 文章转载至的版面的名称
 	 * @return 所转载的文章元数据
 	 * @throws ClientProtocolException
 	 * @throws JSONException

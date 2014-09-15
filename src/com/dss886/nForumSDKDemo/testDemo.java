@@ -1,5 +1,6 @@
 package com.dss886.nForumSDKDemo;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.json.JSONException;
@@ -7,7 +8,12 @@ import org.json.JSONException;
 import com.dss886.nForumSDK.NForumSDK;
 import com.dss886.nForumSDK.http.NForumException;
 import com.dss886.nForumSDK.model.Article;
+import com.dss886.nForumSDK.model.Attachment;
 import com.dss886.nForumSDK.model.Board;
+import com.dss886.nForumSDK.model.Favorite;
+import com.dss886.nForumSDK.model.Mail;
+import com.dss886.nForumSDK.model.Mailbox;
+import com.dss886.nForumSDK.model.Search;
 import com.dss886.nForumSDK.model.Section;
 import com.dss886.nForumSDK.model.Threads;
 import com.dss886.nForumSDK.model.User;
@@ -56,12 +62,40 @@ public class testDemo {
 //			
 //			Board board;
 //			board = boardService.getBoard("BBSHELP", 2, 30, 1);
+//			
+//			Article article;
+//			article = articleService.getArticle("BBSHELP", 2, 2);
+//			Threads threads = articleService.getThreads("BBSHELP", 2, null, 10, 1);
+//			article = articleService.postArticle("TEST", "test nForumSDK", "hah", -1, -1, 0, 0, 0);
+//			articleService.forwardArticle("TEST", 72644, "dss886", 0, 0, 0, 0, 0);
+//			articleService.crossArticle("TEST", 72644, "Hubei");
+//			articleService.updateArticle("TEST", 72644, "test nForumSDK", "test updatePost() method\n--");
+//			articleService.deleteArticle("Hubei", 384945);
+//			
+//			Attachment att;
+//			att = attachmentService.getAttachment("Hubei", 384945);
+//			att = attachmentService.addAttachment("Hubei", 384945, new File("D:\\test.txt"));
+//			att = attachmentService.delAttachment("Hubei", 384945, "test.txt");
+//			
+//			Mail mail;
+//			Mailbox mailbox;
+//			mailbox = mailService.getMailbox(Constant.MAILBOX_INBOX, 20, 1);
+//			mailbox = mailService.getMailboxInfo();
+//			mail = mailService.getMail(Constant.MAILBOX_INBOX, 1);
+//			mailService.sendMail("dss886", "test", "test2", 0, 0);
+//			mailService.forwardMail(Constant.MAILBOX_INBOX, 1, "dss886", 0, 0);
+//			mailService.replyMail(Constant.MAILBOX_INBOX, 1, "Re: mail index=1", "test replyMail", -1, 0);
+//			mailService.deleteMail(Constant.MAILBOX_INBOX, 373);
+//			
+			Favorite fav;
+			fav = favouriteService.getFavourite(0);
+			favouriteService.addFavourite(0, "Flash", 0);
+			favouriteService.delFavourite(0, "Flash", 0);
 			
-			Article article;
-			article = articleService.getArticle("BBSHELP", 2, 2);
-			Threads threads = articleService.getThreads("BBSHELP", 2, null, 10, 1);
+			Search search;
+//			search = searchService.searchBoard("3");
+			int i = 1;
 			
-			mailService.sendMail("dss886", "test", "test2", 0, 0);
 		} catch (JSONException | NForumException | IOException e) {
 			e.printStackTrace();
 		}

@@ -28,7 +28,7 @@ import org.json.JSONException;
 import com.dss886.nForumSDK.http.GetMethod;
 import com.dss886.nForumSDK.http.NForumException;
 import com.dss886.nForumSDK.http.PostMethod;
-import com.dss886.nForumSDK.model.Favourite;
+import com.dss886.nForumSDK.model.Favorite;
 
 /**
  * 该类封装了收藏夹接口，
@@ -62,11 +62,11 @@ public class FavouriteService {
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Favourite getFavourite(int level) throws ClientProtocolException, JSONException,
+	public Favorite getFavourite(int level) throws ClientProtocolException, JSONException,
 		NForumException, IOException {
 		String url = host + "favorite/" + level + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
-		return Favourite.parse(getMethod.getJSON());
+		return Favorite.parse(getMethod.getJSON());
 	}
 	
 	/**
@@ -80,14 +80,14 @@ public class FavouriteService {
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Favourite addFavourite(int level, String name, int dir) throws ClientProtocolException,
+	public Favorite addFavourite(int level, String name, int dir) throws ClientProtocolException,
 			JSONException, NForumException, IOException {
 		String url = host + "favorite/add" + level + returnFormat + appkey;
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("name", name));
 		params.add(new BasicNameValuePair("dir", dir+""));
 		PostMethod postMethod = new PostMethod(httpClient, auth, url, params);
-		return Favourite.parse(postMethod.postJSON());
+		return Favorite.parse(postMethod.postJSON());
 	}
 	
 	/**
@@ -101,13 +101,13 @@ public class FavouriteService {
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Favourite delFavourite(int level, String name, int dir) throws ClientProtocolException,
+	public Favorite delFavourite(int level, String name, int dir) throws ClientProtocolException,
 	JSONException, NForumException, IOException {
 		String url = host + "favorite/delete" + level + returnFormat + appkey;
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("name", name));
 		params.add(new BasicNameValuePair("dir", dir+""));
 		PostMethod postMethod = new PostMethod(httpClient, auth, url, params);
-		return Favourite.parse(postMethod.postJSON());
+		return Favorite.parse(postMethod.postJSON());
 	}
 }

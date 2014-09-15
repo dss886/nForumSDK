@@ -62,7 +62,8 @@ public class SearchService {
 	public Search searchBoard(String keyword) throws ClientProtocolException, JSONException,
 		NForumException, IOException {
 		String board = URLEncoder.encode(keyword, "GBK");
-		String url = host + "search/" + board + returnFormat + appkey;
+		String url = host + "search/board" + returnFormat + appkey
+				+ "&board=" + board;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
 		return Search.parse(getMethod.getJSON());
 	}
