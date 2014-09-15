@@ -93,7 +93,7 @@ public class ArticleService {
 		ClientProtocolException, JSONException, NForumException, IOException {
 		String url = host + "threads/" + boardName + "/"+ id + returnFormat + appkey
 				+ "&count=" + count +"&page=" + page;
-		if(au != null){
+		if(null != au && !au.isEmpty()){
 			url = url + "&au=" + au ;
 		}
 		if(count > 0){

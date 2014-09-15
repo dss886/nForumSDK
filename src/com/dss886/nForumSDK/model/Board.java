@@ -102,9 +102,11 @@ public class Board {
         board.user_online_count = jsonObject.optInt("user_online_count", -1);
         board.user_online_max_time = jsonObject.optInt("user_online_max_time", -1);
         JSONArray jsonArticles = jsonObject.optJSONArray("article");
-        for(int i = 0; i < jsonArticles.length(); i++){
-        	board.articles.add(Article.parse(jsonArticles.optJSONObject(i)));
-		}
+        if(null != jsonArticles){
+        	for(int i = 0; i < jsonArticles.length(); i++){
+        		board.articles.add(Article.parse(jsonArticles.optJSONObject(i)));
+        	}
+        }
         board.pagination = Pagination.parse(jsonObject.optJSONObject("pagination"));
         return board;
 	}

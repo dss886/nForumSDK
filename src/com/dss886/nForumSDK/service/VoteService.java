@@ -28,7 +28,6 @@ import org.json.JSONException;
 import com.dss886.nForumSDK.http.GetMethod;
 import com.dss886.nForumSDK.http.NForumException;
 import com.dss886.nForumSDK.http.PostMethod;
-import com.dss886.nForumSDK.model.Article;
 import com.dss886.nForumSDK.model.Vote;
 
 /**
