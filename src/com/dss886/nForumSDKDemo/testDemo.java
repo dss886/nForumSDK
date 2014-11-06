@@ -96,7 +96,7 @@ public class testDemo {
 //			search = searchService.searchBoard("3");
 			int i = 1;
 			
-		} catch (JSONException | NForumException | IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

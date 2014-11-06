@@ -19,11 +19,10 @@ import java.io.IOException;
 
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.GzipDecompressingEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,11 +36,10 @@ import com.dss886.nForumSDK.util.Log;
  */
 public class GetMethod {
 	
-	private DefaultHttpClient httpClient;
+	private CloseableHttpClient httpClient;
 	private HttpGet httpGet;
-	private HttpResponse response;
-	
-	public GetMethod(DefaultHttpClient httpClient, String auth, String url){
+
+    public GetMethod(CloseableHttpClient httpClient, String auth, String url){
 		this.httpClient = httpClient;
 		httpGet = new HttpGet(url);
 		Log.d("APIUrl", url);
@@ -49,16 +47,15 @@ public class GetMethod {
 		httpGet.setHeader("Authorization", "Basic " + auth);
 	}
 	
-	public JSONObject getJSON() throws JSONException, NForumException, 
-		ClientProtocolException, IOException{
-		response = httpClient.execute(httpGet);
+	public JSONObject getJSON() throws JSONException, NForumException, IOException{
+        CloseableHttpResponse response = httpClient.execute(httpGet);
 		
 		int statusCode = response.getStatusLine().getStatusCode();
 		if (statusCode != 200)
 			throw new NForumException(Constant.EXCEPTION_NETWORK + ":" + statusCode);
-		Header ceheader = response.getEntity().getContentEncoding();
-		if (ceheader != null) {
-			for (HeaderElement element : ceheader.getElements()) {
+		Header header = response.getEntity().getContentEncoding();
+		if (header != null) {
+			for (HeaderElement element : header.getElements()) {
 				if (element.getName().equalsIgnoreCase("gzip")) {
 					response.setEntity(new GzipDecompressingEntity(response.getEntity()));
 					break;
@@ -66,6 +63,7 @@ public class GetMethod {
 			}
 		}
 		String result = ResponseProcessor.getStringFromResponse(response);
+        response.close();
 		httpGet.abort();
 		
 		JSONObject json = new JSONObject(result);
