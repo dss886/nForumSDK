@@ -16,9 +16,8 @@
 package com.dss886.nForumSDK;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 import com.dss886.nForumSDK.service.ArticleService;
 import com.dss886.nForumSDK.service.AttachmentService;
@@ -32,7 +31,7 @@ import com.dss886.nForumSDK.service.SectionService;
 import com.dss886.nForumSDK.service.UserService;
 import com.dss886.nForumSDK.service.VoteService;
 import com.dss886.nForumSDK.service.WidgetService;
-import com.dss886.nForumSDK.util.Constant;
+import com.dss886.nForumSDK.util.Host;
 
 /**
  * SDK主类，封装了一些参数设置函数，
@@ -42,28 +41,23 @@ import com.dss886.nForumSDK.util.Constant;
  */
 public class NForumSDK {
 	
-	private DefaultHttpClient httpClient;
+	private CloseableHttpClient httpClient;
 	private String host;
 	private String appkey;
 	private String auth;
 	
-	private String returnFormat = Constant.RETRUN_FORMAT_JSON;
-	private int timeout = 10000;
+	private String returnFormat = Host.RETURN_FORMAT_JSON;
 
 	/**
 	 * 需要appkey的构造函数
 	 * @param host 需要包括完整的协议和尾部的斜杠，例如：http://api.byr.cn/，
-	 * 			或者使用 Contant.HOST_* 常量。
+	 * 			或者使用 Host.HOST_* 常量。
 	 * @param appkey 不包含参数名"?appkey="和尾部多余的"&"字符
 	 * @param username 用户名
 	 * @param password 密码
 	 */
 	public NForumSDK(String host, String appkey, String username, String password){
-		httpClient = new DefaultHttpClient();
-		HttpParams param = httpClient.getParams();
-		HttpConnectionParams.setConnectionTimeout(param, timeout);
-		HttpConnectionParams.setSoTimeout(param, timeout);
-		httpClient = new DefaultHttpClient(param);
+		httpClient = HttpClients.createDefault();
 		auth = new String(Base64.encodeBase64((username + ":" + password).getBytes()));
 		this.host = host;
 		this.returnFormat = returnFormat + "?";
@@ -73,33 +67,18 @@ public class NForumSDK {
 	/**
 	 * 不需要appkey的构造函数
 	 * @param host 需要包括完整的协议和尾部的斜杠，例如：http://api.byr.cn/，
-	 * 			或者使用 Contant.HOST_* 常量。
+	 * 			或者使用 HOST.HOST_* 常量。
 	 * @param username 用户名
 	 * @param password 密码
 	 */
 	public NForumSDK(String host, String username, String password){
-		httpClient = new DefaultHttpClient();
-		HttpParams param = httpClient.getParams();
-		HttpConnectionParams.setConnectionTimeout(param, timeout);
-		HttpConnectionParams.setSoTimeout(param, timeout);
-		httpClient = new DefaultHttpClient(param);
+		httpClient = HttpClients.createDefault();
 		auth = new String(Base64.encodeBase64((username + ":" + password).getBytes()));
 		this.host = host;
 		this.returnFormat = returnFormat + "?";
 		this.appkey = "";
 	}
-	
-	public int getTimeout() {
-		return timeout;
-	}
 
-	/**
-	 * @param timeout 网络超时毫秒数
-	 */
-	public void setTimeout(int timeout) {
-		this.timeout = timeout;
-	}
-	
 	/**
 	 * @return 用户接口封装对象
 	 */

@@ -17,8 +17,7 @@ package com.dss886.nForumSDK.service;
 
 import java.io.IOException;
 
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.json.JSONException;
 
 import com.dss886.nForumSDK.http.GetMethod;
@@ -33,13 +32,13 @@ import com.dss886.nForumSDK.model.User;
  */
 public class UserService {
 
-	private DefaultHttpClient httpClient; 
+	private CloseableHttpClient httpClient;
 	private String host;
 	private String returnFormat;
 	private String appkey;
 	private String auth; 
 	
-	public UserService(DefaultHttpClient httpClient, String host,
+	public UserService(CloseableHttpClient httpClient, String host,
 			String returnFormat, String appkey, String auth){
 		this.httpClient = httpClient;
 		this.host = host;
@@ -54,9 +53,8 @@ public class UserService {
 	 * @throws IOException 
 	 * @throws NForumException 
 	 * @throws JSONException 
-	 * @throws ClientProtocolException 
 	 * */
-	public User queryById(String id) throws ClientProtocolException, JSONException,
+	public User queryById(String id) throws JSONException,
 		NForumException, IOException {
 		String url = host + "user/query/" + id + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
@@ -64,15 +62,14 @@ public class UserService {
 	}
 	
 	/**
-	 * 用户登录
-	 * @info 此API没有实际功能，可不需要调用
+	 * 用户登录，
+	 * 此API没有实际功能，可不需要调用
 	 * @return 当前登录用户的元数据
-	 * @throws ClientProtocolException
 	 * @throws JSONException
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public User login() throws ClientProtocolException, JSONException,
+	public User login() throws JSONException,
 		NForumException, IOException {
 		String url = host + "user/login" + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
@@ -83,12 +80,11 @@ public class UserService {
 	/**
 	 * 用户退出
 	 * @return 当前登录用户的元数据
-	 * @throws ClientProtocolException
 	 * @throws JSONException
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public User logout() throws ClientProtocolException, JSONException,
+	public User logout() throws JSONException,
 		NForumException, IOException {
 		String url = host + "user/logout" + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);

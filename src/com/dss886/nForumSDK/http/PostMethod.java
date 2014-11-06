@@ -17,11 +17,10 @@ package com.dss886.nForumSDK.http;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 
+import com.dss886.nForumSDK.util.ParamOption;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.GzipDecompressingEntity;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -30,8 +29,6 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.dss886.nForumSDK.util.Constant;
 
 /**
  * 该类封装了HTTP Post方法
@@ -43,11 +40,11 @@ public class PostMethod {
 	private CloseableHttpClient httpClient;
 	private HttpPost httpPost;
 
-    public PostMethod(CloseableHttpClient httpClient, String auth, String url, List<NameValuePair> params){
+    public PostMethod(CloseableHttpClient httpClient, String auth, String url, ParamOption params){
 		this.httpClient = httpClient;
 		httpPost = new HttpPost(url);
 		try {
-			httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+			httpPost.setEntity(new UrlEncodedFormEntity(params.toNamePair(), "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -67,7 +64,7 @@ public class PostMethod {
         CloseableHttpResponse response = httpClient.execute(httpPost);
 		int statusCode = response.getStatusLine().getStatusCode();
 		if (statusCode != 200)
-			throw new NForumException(Constant.EXCEPTION_NETWORK + ":" + statusCode);
+			throw new NForumException(NForumException.EXCEPTION_NETWORK + ":" + statusCode);
 		Header header = response.getEntity().getContentEncoding();
 		if (header != null) {
 			for (HeaderElement element : header.getElements()) {

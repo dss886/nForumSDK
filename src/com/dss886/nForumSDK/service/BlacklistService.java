@@ -16,13 +16,9 @@
 package com.dss886.nForumSDK.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
+import com.dss886.nForumSDK.util.ParamOption;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.json.JSONException;
 
 import com.dss886.nForumSDK.http.GetMethod;
@@ -38,13 +34,13 @@ import com.dss886.nForumSDK.model.Blacklist;
  */
 public class BlacklistService {
 
-	private DefaultHttpClient httpClient; 
+	private CloseableHttpClient httpClient;
 	private String host;
 	private String returnFormat;
 	private String appkey;
 	private String auth; 
 	
-	public BlacklistService(DefaultHttpClient httpClient, String host,
+	public BlacklistService(CloseableHttpClient httpClient, String host,
 			String returnFormat, String appkey, String auth){
 		this.httpClient = httpClient;
 		this.host = host;
@@ -55,36 +51,31 @@ public class BlacklistService {
 	
 	/**
 	 * 用户黑名单列表
-	 * @param count 每页用户的数量，最小1 最大50 默认20
-	 * @param page 列表的页数，默认1
+     * 可选参数：count, page
 	 * @return 黑名单结构体
-	 * @throws ClientProtocolException
 	 * @throws JSONException
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Blacklist getBlacklist(int count, int page) throws ClientProtocolException, JSONException,
+	public Blacklist getBlacklist(ParamOption params) throws JSONException,
 		NForumException, IOException {
-		String url = host + "blacklist/list" + returnFormat + appkey 
-				+ "&count=" + count +"&page=" + page;
-		GetMethod getMethod = new GetMethod(httpClient, auth, url);
-		return Blacklist.parse(getMethod.getJSON());
-	}
-	
-	/**
+        String url = host + "blacklist/list" + returnFormat + appkey + params;
+        GetMethod getMethod = new GetMethod(httpClient, auth, url);
+        return Blacklist.parse(getMethod.getJSON());
+    }
+
+    /**
 	 * 黑名单添加用户
 	 * @param id 所要添加的用户ID
 	 * @return 成功为true，不成功则抛出nForumException异常
-	 * @throws ClientProtocolException
 	 * @throws JSONException
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public boolean addBlacklist(String id) throws ClientProtocolException, JSONException,
+	public boolean addBlacklist(String id) throws JSONException,
 		NForumException, IOException {
 		String url = host + "blacklist/add" + returnFormat + appkey;
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("id", id));
+        ParamOption params = new ParamOption().addParams("id", id);
 		PostMethod postMethod = new PostMethod(httpClient, auth, url, params);
 		return postMethod.postJSON().getBoolean("status");
 	}
@@ -93,16 +84,14 @@ public class BlacklistService {
 	 * 黑名单删除用户
 	 * @param id 所要删除的用户ID
 	 * @return 成功为true，不成功则抛出nForumException异常
-	 * @throws ClientProtocolException
 	 * @throws JSONException
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public boolean delBlacklist(String id) throws ClientProtocolException, JSONException,
+	public boolean delBlacklist(String id) throws JSONException,
 	NForumException, IOException {
 		String url = host + "blacklist/delete" + returnFormat + appkey;
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("id", id));
+        ParamOption params = new ParamOption().addParams("id", id);
 		PostMethod postMethod = new PostMethod(httpClient, auth, url, params);
 		return postMethod.postJSON().getBoolean("status");
 	}

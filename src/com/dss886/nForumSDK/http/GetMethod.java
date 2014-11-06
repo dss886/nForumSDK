@@ -19,15 +19,13 @@ import java.io.IOException;
 
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.GzipDecompressingEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.dss886.nForumSDK.util.Constant;
-import com.dss886.nForumSDK.util.Log;
 
 /**
  * 该类封装了HTTP Get方法
@@ -42,7 +40,11 @@ public class GetMethod {
     public GetMethod(CloseableHttpClient httpClient, String auth, String url){
 		this.httpClient = httpClient;
 		httpGet = new HttpGet(url);
-		Log.d("APIUrl", url);
+        RequestConfig config = RequestConfig.custom()
+                .setSocketTimeout(2000)
+                .setConnectTimeout(2000)
+                .build();
+        httpGet.setConfig(config);
 		httpGet.setHeader("Accept-Encoding", "gzip, deflate");
 		httpGet.setHeader("Authorization", "Basic " + auth);
 	}
@@ -52,7 +54,7 @@ public class GetMethod {
 		
 		int statusCode = response.getStatusLine().getStatusCode();
 		if (statusCode != 200)
-			throw new NForumException(Constant.EXCEPTION_NETWORK + ":" + statusCode);
+			throw new NForumException(NForumException.EXCEPTION_NETWORK + ":" + statusCode);
 		Header header = response.getEntity().getContentEncoding();
 		if (header != null) {
 			for (HeaderElement element : header.getElements()) {

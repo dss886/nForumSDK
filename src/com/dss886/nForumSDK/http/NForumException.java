@@ -23,6 +23,7 @@ package com.dss886.nForumSDK.http;
 public class NForumException extends Exception{
 
 	private static final long serialVersionUID = 6109206721671985192L;
+    public static final String EXCEPTION_NETWORK = "网络异常";
 
 	public NForumException(){
         super();

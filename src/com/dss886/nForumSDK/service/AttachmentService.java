@@ -17,13 +17,9 @@ package com.dss886.nForumSDK.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
+import com.dss886.nForumSDK.util.ParamOption;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.json.JSONException;
@@ -41,13 +37,13 @@ import com.dss886.nForumSDK.model.Attachment;
  */
 public class AttachmentService {
 	
-	private DefaultHttpClient httpClient; 
+	private CloseableHttpClient httpClient;
 	private String host;
 	private String returnFormat;
 	private String appkey;
 	private String auth; 
 	
-	public AttachmentService(DefaultHttpClient httpClient, String host,
+	public AttachmentService(CloseableHttpClient httpClient, String host,
 			String returnFormat, String appkey, String auth){
 		this.httpClient = httpClient;
 		this.host = host;
@@ -58,44 +54,44 @@ public class AttachmentService {
 	
 	/**
 	 * 获取附件信息
-	 * @param name 合法的版面名称
-	 * @param id 可选，如果指定文章id则返回该文章的附件列表，
-	 * 否则(id=-1)返回当前用户上传文件的列表，当前用户的附件列表在下一次发文时会附加至新文章中
-	 * @return 返回指定文章的附件列表
-	 * @throws ClientProtocolException
+     * 可选参数：id，如果指定文章id则返回该文章的附件列表，
+     * 否则(id=-1)返回当前用户上传文件的列表，当前用户的附件列表在下一次发文时会附加至新文章中
+     * @param name 合法的版面名称
+     * @return 返回指定文章的附件列表
 	 * @throws JSONException
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Attachment getAttachment(String name, int id) throws 
-		ClientProtocolException, JSONException, NForumException, IOException {
-		String url;
-		if(id == -1){
-			url = host + "attachment/" + name + returnFormat + appkey;
-		}
-		url = host + "attachment/" + name + "/" + id + returnFormat + appkey;
-		GetMethod getMethod = new GetMethod(httpClient, auth, url);
-		return Attachment.parse(getMethod.getJSON());
-	}
-	
-	/**
-	 * 如果指定文章id则向该文章添加新附加，否则（id=-1）向当前用户的附件列表添加新附件
+	public Attachment getAttachment(String name, ParamOption params) throws
+		JSONException, NForumException, IOException {
+        String url = host + "attachment/" + name;
+        if (params.getParams().containsKey("id")) {
+            url = url + "/" + params.getParams().get("id") + returnFormat + appkey;
+        } else {
+            url = url + returnFormat + appkey;
+        }
+        GetMethod getMethod = new GetMethod(httpClient, auth, url);
+        return Attachment.parse(getMethod.getJSON());
+    }
+
+    /**
+     * 添加新附件
+	 * 可选参数：id，如果指定id则向该文章添加新附加，否则向当前用户的附件列表添加新附件
 	 * @param boardName 合法的版面名称
-	 * @param id 文章或主题id
 	 * @param file 需上传的附件
 	 * @return 用户空间/文章附件元数据
-	 * @throws ClientProtocolException
 	 * @throws JSONException
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Attachment addAttachment(String boardName, int id, File file) throws ClientProtocolException, JSONException,
+	public Attachment addAttachment(String boardName, File file, ParamOption params) throws JSONException,
 		NForumException, IOException {
-		String url;
-		if(id == -1){
-			url = host + "attachment/" + boardName + "/add" + returnFormat + appkey;
-		}
-		url = host + "attachment/" + boardName + "/add" + "/" + id + returnFormat + appkey;
+        String url = host + "attachment/" + boardName + "/add";
+        if (params.getParams().containsKey("id")) {
+            url = url + "/" + params.getParams().get("id") + returnFormat + appkey;
+        } else {
+            url = url + returnFormat + appkey;
+        }
 		FileBody fileBody = new FileBody(file);
 		MultipartEntity mEntity = new MultipartEntity();
 		mEntity.addPart("file", fileBody);
@@ -104,26 +100,25 @@ public class AttachmentService {
 	}
 	
 	/**
-	 * 如果指定文章id则从该文章中删除附加，否则（id=-1）从当前用户的附件列表删除附件
+     * 删除附件
+     * 可选参数：id，如果指定文章id则从该文章中删除附加，否则从当前用户的附件列表删除附件
 	 * @param boardName 合法的版面名称
-	 * @param id 文章或主题id
 	 * @param file 需删除附件名
 	 * @return 用户空间/文章附件元数据
-	 * @throws ClientProtocolException
 	 * @throws JSONException
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Attachment delAttachment(String boardName, int id, String file) throws ClientProtocolException, JSONException,
+	public Attachment delAttachment(String boardName, String file, ParamOption params) throws JSONException,
 		NForumException, IOException {
-		String url;
-		if(id == -1){
-			url = host + "attachment/" + boardName + "/delete" + returnFormat + appkey;
-		}
-		url = host + "attachment/" + boardName + "/delete" + "/" + id + returnFormat + appkey;
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("name", file));
-		PostMethod postMethod = new PostMethod(httpClient, auth, url, params);
+		String url = host + "attachment/" + boardName + "/delete";
+        if (params.getParams().containsKey("id")) {
+            url = url + "/" + params.getParams().get("id") + returnFormat + appkey;
+        } else {
+            url = url + returnFormat + appkey;
+        }
+        params.addParams("file", file);
+        PostMethod postMethod = new PostMethod(httpClient, auth, url, params);
 		return Attachment.parse(postMethod.postJSON());
 	}
 	
