@@ -20,7 +20,7 @@ package com.dss886.nForumSDK.util;
  * @author dss886
  * @since 2014-9-7
  */
-public class Constant {
+public class Host {
 	public static final String HOST_BYR = "http://api.byr.cn/";
 	public static final String HOST_BYR_TEST = "http://nforum.byr.edu.cn/byr/api/";
 	public static final String HOST_TDRD = "http://napi.tdrd.org/";
@@ -28,21 +28,6 @@ public class Constant {
 	public static final String GUEST_USERNAME = "guest";
 	public static final String GUEST_PASSWORD = "";
 	
-	public static final String EXCEPTION_NETWORK = "网络异常";
-	
-	public static final String RETRUN_FORMAT_JSON = ".json";
-	
-	public static final String MAILBOX_INBOX = "inbox";
-	public static final String MAILBOX_OUTBOX = "outbox";
-	public static final String MAILBOX_DELETED = "deleted";
-	
-	public static final String REFER_AT = "at";
-	public static final String REFER_REPLY = "reply";
-	
-	public static final String VOTE_ME = "me";
-	public static final String VOTE_JOIN = "join";
-	public static final String VOTE_LIST = "list";
-	public static final String VOTE_NEW = "new";
-	public static final String VOTE_HOT = "hot";
-	public static final String VOTE_ALL = "all";
+	public static final String RETURN_FORMAT_JSON = ".json";
+
 }

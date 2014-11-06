@@ -17,8 +17,7 @@ package com.dss886.nForumSDK.service;
 
 import java.io.IOException;
 
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.json.JSONException;
 
 import com.dss886.nForumSDK.http.GetMethod;
@@ -33,13 +32,13 @@ import com.dss886.nForumSDK.model.Widget;
  */
 public class WidgetService {
 
-	private DefaultHttpClient httpClient; 
+	private CloseableHttpClient httpClient;
 	private String host;
 	private String returnFormat;
 	private String appkey;
 	private String auth; 
 	
-	public WidgetService(DefaultHttpClient httpClient, String host,
+	public WidgetService(CloseableHttpClient httpClient, String host,
 			String returnFormat, String appkey, String auth){
 		this.httpClient = httpClient;
 		this.host = host;
@@ -51,12 +50,11 @@ public class WidgetService {
 	/**
 	 * 获取十大热门话题的信息
 	 * @return widget元数据
-	 * @throws ClientProtocolException
 	 * @throws JSONException
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Widget getWidgetTopten() throws ClientProtocolException, JSONException,
+	public Widget getWidgetTopten() throws JSONException,
 		NForumException, IOException {
 		String url = host + "widget/topten" + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
@@ -65,12 +63,11 @@ public class WidgetService {
 	
 	/** 获取推荐文章的信息
 	 * @return widget元数据
-	 * @throws ClientProtocolException
 	 * @throws JSONException
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Widget getWidgetRecommend() throws ClientProtocolException, JSONException,
+	public Widget getWidgetRecommend() throws JSONException,
 		NForumException, IOException {
 		String url = host + "widget/recommend" + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
@@ -81,12 +78,11 @@ public class WidgetService {
 	 * 获取分区热门话题的信息
 	 * @param sectionName 合法的分区名称
 	 * @return widget元数据
-	 * @throws ClientProtocolException
 	 * @throws JSONException
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Widget getWidgetSection(int sectionName) throws ClientProtocolException,
+	public Widget getWidgetSection(int sectionName) throws
 		JSONException, NForumException, IOException {
 		String url = host + "widget/section-" + sectionName + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);

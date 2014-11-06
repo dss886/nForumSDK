@@ -17,22 +17,18 @@ package com.dss886.nForumSDK.http;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 
+import com.dss886.nForumSDK.util.ParamOption;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.GzipDecompressingEntity;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.dss886.nForumSDK.util.Constant;
 
 /**
  * 该类封装了HTTP Post方法
@@ -41,15 +37,14 @@ import com.dss886.nForumSDK.util.Constant;
  */
 public class PostMethod {
 
-	private DefaultHttpClient httpClient;
+	private CloseableHttpClient httpClient;
 	private HttpPost httpPost;
-	private HttpResponse response;
-	
-	public PostMethod(DefaultHttpClient httpClient, String auth, String url, List<NameValuePair> params){
+
+    public PostMethod(CloseableHttpClient httpClient, String auth, String url, ParamOption params){
 		this.httpClient = httpClient;
 		httpPost = new HttpPost(url);
 		try {
-			httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+			httpPost.setEntity(new UrlEncodedFormEntity(params.toNamePair(), "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -57,7 +52,7 @@ public class PostMethod {
 		httpPost.setHeader("Authorization", "Basic " + auth);
 	}
 	
-	public PostMethod(DefaultHttpClient httpClient, String auth, String url, MultipartEntity  mEntity){
+	public PostMethod(CloseableHttpClient httpClient, String auth, String url, MultipartEntity  mEntity){
 		this.httpClient = httpClient;
 		httpPost = new HttpPost(url);
 		httpPost.setEntity(mEntity);
@@ -65,15 +60,14 @@ public class PostMethod {
 		httpPost.setHeader("Authorization", "Basic " + auth);
 	}
 	
-	public JSONObject postJSON() throws JSONException, NForumException, 
-		ClientProtocolException, IOException{
-		response = httpClient.execute(httpPost);
+	public JSONObject postJSON() throws JSONException, NForumException, IOException{
+        CloseableHttpResponse response = httpClient.execute(httpPost);
 		int statusCode = response.getStatusLine().getStatusCode();
 		if (statusCode != 200)
-			throw new NForumException(Constant.EXCEPTION_NETWORK + ":" + statusCode);
-		Header ceheader = response.getEntity().getContentEncoding();
-		if (ceheader != null) {
-			for (HeaderElement element : ceheader.getElements()) {
+			throw new NForumException(NForumException.EXCEPTION_NETWORK + ":" + statusCode);
+		Header header = response.getEntity().getContentEncoding();
+		if (header != null) {
+			for (HeaderElement element : header.getElements()) {
 				if (element.getName().equalsIgnoreCase("gzip")) {
 					response.setEntity(new GzipDecompressingEntity(response.getEntity()));
 					break;
@@ -81,6 +75,7 @@ public class PostMethod {
 			}
 		}
 		String result = ResponseProcessor.getStringFromResponse(response);
+        response.close();
 		httpPost.abort();
 		
 		JSONObject json = new JSONObject(result);

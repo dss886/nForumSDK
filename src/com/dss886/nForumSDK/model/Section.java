@@ -79,18 +79,26 @@ public class Section {
         section.parent = jsonObject.optString("parent", "");
         section.section_count = jsonObject.optInt("section_count", -1);
         JSONArray jsonSections = jsonObject.optJSONArray("section");
-        for(int i = 0; i < jsonSections.length(); i++){
-        	section.sections.add(Section.parse(jsonSections.optJSONObject(i)));
-		}
+        if(null != jsonSections){
+        	for(int i = 0; i < jsonSections.length(); i++){
+        		section.sections.add(Section.parse(jsonSections.optJSONObject(i)));
+        	}
+        }
         JSONArray jsonSubSections = jsonObject.optJSONArray("sub_section");
-        section.sub_section = new String[jsonSubSections.length()];
-        for(int i = 0; i < jsonSubSections.length(); i++){
-        	section.sub_section[i] = jsonSubSections.optString(i);
-		}
+        if(null != jsonSubSections){
+        	section.sub_section = new String[jsonSubSections.length()];
+        	for(int i = 0; i < jsonSubSections.length(); i++){
+        		section.sub_section[i] = jsonSubSections.optString(i);
+        	}
+        }else{
+        	section.sub_section = new String[0];
+        }
         JSONArray jsonBoards = jsonObject.optJSONArray("board");
-        for(int i = 0; i < jsonBoards.length(); i++){
-        	section.boards.add(Board.parse(jsonBoards.optJSONObject(i)));
-		}
+        if(null != jsonBoards){
+        	for(int i = 0; i < jsonBoards.length(); i++){
+        		section.boards.add(Board.parse(jsonBoards.optJSONObject(i)));
+        	}
+        }
         return section;
 	}
 }

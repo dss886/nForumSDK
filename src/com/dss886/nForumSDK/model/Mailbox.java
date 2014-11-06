@@ -15,6 +15,7 @@
  */
 package com.dss886.nForumSDK.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -45,7 +46,7 @@ public class Mailbox {
 	 * 当前信箱所包含的信件元数据数组，
 	 * 仅存在于/mail/:box中
 	 *  */
-	public List<Mail> mails;
+	public List<Mail> mails = new ArrayList<Mail>();
 	/** 
 	 * 当前信箱的分页信息，
 	 * 仅存在于/mail/:box中
@@ -73,10 +74,12 @@ public class Mailbox {
         mailbox.space_used = jsonObject.optString("space_used", "");
         mailbox.can_send = jsonObject.optBoolean("can_send", true);
         mailbox.description = jsonObject.optString("description", "");
-        JSONArray jsonMails = jsonObject.optJSONArray("article");
-        for(int i = 0; i < jsonMails.length(); i++){
-        	mailbox.mails.add(Mail.parse(jsonMails.optJSONObject(i)));
-		}
+        JSONArray jsonMails = jsonObject.optJSONArray("mail");
+        if(null != jsonMails){
+        	for(int i = 0; i < jsonMails.length(); i++){
+        		mailbox.mails.add(Mail.parse(jsonMails.optJSONObject(i)));
+        	}
+        }
         mailbox.pagination = Pagination.parse(jsonObject.optJSONObject("pagination"));
         return mailbox;
 	}

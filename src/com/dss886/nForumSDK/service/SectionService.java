@@ -18,6 +18,7 @@ package com.dss886.nForumSDK.service;
 import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 
@@ -33,13 +34,13 @@ import com.dss886.nForumSDK.model.Section;
  */
 public class SectionService {
 	
-	private DefaultHttpClient httpClient; 
+	private CloseableHttpClient httpClient;
 	private String host;
 	private String returnFormat;
 	private String appkey;
 	private String auth; 
 	
-	public SectionService(DefaultHttpClient httpClient, String host,
+	public SectionService(CloseableHttpClient httpClient, String host,
 			String returnFormat, String appkey, String auth){
 		this.httpClient = httpClient;
 		this.host = host;
@@ -51,12 +52,11 @@ public class SectionService {
 	/**
 	 * 获取所有根分区信息
 	 * @return 根分区数量，和所有根分区元数据所组成的数组
-	 * @throws ClientProtocolException
 	 * @throws JSONException
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Section getSection() throws ClientProtocolException, JSONException,
+	public Section getSection() throws JSONException,
 		NForumException, IOException {
 		String url = host + "section" + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
@@ -67,12 +67,11 @@ public class SectionService {
 	 * 获取指定分区的信息
 	 * @param name 合法的分区名称
 	 * @return 当前分区包含的分区目录名数，和当前分区包含的版面元数据数组
-	 * @throws ClientProtocolException
 	 * @throws JSONException
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Section getSection(String name) throws ClientProtocolException, JSONException,
+	public Section getSection(String name) throws JSONException,
 		NForumException, IOException {
 		String url = host + "section/"+ name + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);

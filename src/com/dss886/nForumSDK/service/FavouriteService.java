@@ -16,19 +16,15 @@
 package com.dss886.nForumSDK.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
+import com.dss886.nForumSDK.util.ParamOption;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.json.JSONException;
 
 import com.dss886.nForumSDK.http.GetMethod;
 import com.dss886.nForumSDK.http.NForumException;
 import com.dss886.nForumSDK.http.PostMethod;
-import com.dss886.nForumSDK.model.Favourite;
+import com.dss886.nForumSDK.model.Favorite;
 
 /**
  * 该类封装了收藏夹接口，
@@ -38,13 +34,13 @@ import com.dss886.nForumSDK.model.Favourite;
  */
 public class FavouriteService {
 
-	private DefaultHttpClient httpClient; 
+	private CloseableHttpClient httpClient;
 	private String host;
 	private String returnFormat;
 	private String appkey;
 	private String auth; 
 	
-	public FavouriteService(DefaultHttpClient httpClient, String host,
+	public FavouriteService(CloseableHttpClient httpClient, String host,
 			String returnFormat, String appkey, String auth){
 		this.httpClient = httpClient;
 		this.host = host;
@@ -57,16 +53,15 @@ public class FavouriteService {
 	 * 获取收藏夹信息
 	 * @param level 收藏夹层数，顶层为0
 	 * @return 收藏夹结构体
-	 * @throws ClientProtocolException
 	 * @throws JSONException
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Favourite getFavourite(int level) throws ClientProtocolException, JSONException,
+	public Favorite getFavourite(int level) throws JSONException,
 		NForumException, IOException {
 		String url = host + "favorite/" + level + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
-		return Favourite.parse(getMethod.getJSON());
+		return Favorite.parse(getMethod.getJSON());
 	}
 	
 	/**
@@ -75,19 +70,18 @@ public class FavouriteService {
 	 * @param name 新的版面或自定义目录，版面为版面name，如Flash；
 	 * @param dir 是否为自定义目录 0不是，1是
 	 * @return 收藏夹结构体
-	 * @throws ClientProtocolException
 	 * @throws JSONException
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Favourite addFavourite(int level, String name, int dir) throws ClientProtocolException,
+	public Favorite addFavourite(int level, String name, int dir) throws
 			JSONException, NForumException, IOException {
 		String url = host + "favorite/add" + level + returnFormat + appkey;
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("name", name));
-		params.add(new BasicNameValuePair("dir", dir+""));
+        ParamOption params = new ParamOption()
+                .addParams("name", name)
+                .addParams("dir", dir);
 		PostMethod postMethod = new PostMethod(httpClient, auth, url, params);
-		return Favourite.parse(postMethod.postJSON());
+		return Favorite.parse(postMethod.postJSON());
 	}
 	
 	/**
@@ -96,18 +90,17 @@ public class FavouriteService {
 	 * @param name 要删除的版面或自定义目录，版面为版面name，如Flash；
 	 * @param dir 是否为自定义目录 0不是，1是
 	 * @return 收藏夹结构体
-	 * @throws ClientProtocolException
 	 * @throws JSONException
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Favourite delFavourite(int level, String name, int dir) throws ClientProtocolException,
-	JSONException, NForumException, IOException {
+	public Favorite delFavourite(int level, String name, int dir) throws
+            JSONException, NForumException, IOException {
 		String url = host + "favorite/delete" + level + returnFormat + appkey;
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("name", name));
-		params.add(new BasicNameValuePair("dir", dir+""));
+        ParamOption params = new ParamOption()
+                .addParams("name", name)
+                .addParams("dir", dir);
 		PostMethod postMethod = new PostMethod(httpClient, auth, url, params);
-		return Favourite.parse(postMethod.postJSON());
+		return Favorite.parse(postMethod.postJSON());
 	}
 }

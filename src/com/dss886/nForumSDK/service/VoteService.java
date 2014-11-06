@@ -19,16 +19,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dss886.nForumSDK.util.ParamOption;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 
 import com.dss886.nForumSDK.http.GetMethod;
 import com.dss886.nForumSDK.http.NForumException;
 import com.dss886.nForumSDK.http.PostMethod;
-import com.dss886.nForumSDK.model.Article;
 import com.dss886.nForumSDK.model.Vote;
 
 /**
@@ -39,13 +38,20 @@ import com.dss886.nForumSDK.model.Vote;
  */
 public class VoteService {
 
-	private DefaultHttpClient httpClient; 
+    public static final String CATEGORY_ME = "me";
+    public static final String CATEGORY_JOIN = "join";
+    public static final String CATEGORY_LIST = "list";
+    public static final String CATEGORY_NEW = "new";
+    public static final String CATEGORY_HOT = "hot";
+    public static final String CATEGORY_ALL = "all";
+
+	private CloseableHttpClient httpClient;
 	private String host;
 	private String returnFormat;
 	private String appkey;
 	private String auth; 
 	
-	public VoteService(DefaultHttpClient httpClient, String host,
+	public VoteService(CloseableHttpClient httpClient, String host,
 			String returnFormat, String appkey, String auth){
 		this.httpClient = httpClient;
 		this.host = host;
@@ -58,12 +64,11 @@ public class VoteService {
 	 * 获取投票信息
 	 * @param vid 投票vid
 	 * @return 投票元数据
-	 * @throws ClientProtocolException
 	 * @throws JSONException
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Vote getVote(int vid) throws ClientProtocolException, JSONException,
+	public Vote getVote(int vid) throws JSONException,
 		NForumException, IOException {
 		String url = host + "vote/" + vid + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
@@ -75,45 +80,38 @@ public class VoteService {
 	 * 投票操作
 	 * @param vid 投票vid
 	 * @param viids 所有提交的投票选项项的viid集合
-	 * @param is_mutichoose 是否为单选
+	 * @param is_multiple_choice 是否为单选，为true时，
 	 * @return 投票元数据
-	 * @throws ClientProtocolException
 	 * @throws JSONException
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Vote vote(int vid, int[] viids, boolean is_mutichoose) throws ClientProtocolException,
+	public Vote vote(int vid, int[] viids, boolean is_multiple_choice) throws
 		JSONException,NForumException, IOException {
 		String url = host + "vote/" + vid + returnFormat + appkey;
+        /* 因为多选时参数名均为vote[]，不能直接用基于Map的ParamOption */
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		if(is_mutichoose){
+		if(is_multiple_choice){
 			params.add(new BasicNameValuePair("vote", viids[0]+""));
 		}else{
-			for(int i = 0; i < viids.length; i++){
-				params.add(new BasicNameValuePair("vote[]", viids[i]+""));
-			}
+            for (int viid : viids) {
+                params.add(new BasicNameValuePair("vote[]", viid + ""));
+            }
 		}
-		PostMethod postMethod = new PostMethod(httpClient, auth, url, params);
+		PostMethod postMethod = new PostMethod(httpClient, auth, url, new ParamOption(params));
 		return Vote.parse(postMethod.postJSON());
 	}
 	
 	/**
 	 * 获取投票列表
-	 * @param category 投票列表类型，取值为me|join|list|new|hot|all，分别表示:
-	 *		me:当前用户发起的投票列表，
-	 *		join:当前用户参与的投票列表，
-	 *		list:查询某个用户发起的投票列表，以u=uid作为参数传入，
-	 *		new:以时间倒序排列的未完成投票列表，
-	 *		hot:以参与人数倒序排列的未截止投票列表，
-	 *		all:以时间倒序排列的所有投票列表，
-	 *		建议使用Constant.VOTE_*常量
+	 * @param category 投票列表类型，取值为me|join|list|new|hot|all，
+	 *		建议使用VoteService.CATEGORY_*常量
 	 * @return 投票元数据
-	 * @throws ClientProtocolException
 	 * @throws JSONException
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Vote getVoteList(String category) throws ClientProtocolException, JSONException,
+	public Vote getVoteList(String category) throws JSONException,
 		NForumException, IOException {
 		String url = host + "vote/category/" + category + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
