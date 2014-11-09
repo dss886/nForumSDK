@@ -15,6 +15,7 @@
  */
 package com.dss886.nForumSDK.model;
 
+import com.dss886.nForumSDK.util.LogUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -92,12 +93,12 @@ public class User {
             JSONObject jsonObject = new JSONObject(jsonString);
             return User.parse(jsonObject);
         } catch (JSONException e) {
-        	User user = new User();
-        	user.id = jsonString;
-        	return user;
+            User user = new User();
+            user.id = jsonString;
+            return user;
         }
     }
-	
+
 	public static User parse(JSONObject jsonObject) {
         if (null == jsonObject) {
             return null;

@@ -15,6 +15,7 @@
  */
 package com.dss886.nForumSDK.model;
 
+import com.dss886.nForumSDK.util.LogUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -133,7 +134,11 @@ public class Article {
         article.has_attachment = jsonObject.optBoolean("has_attachment", false);
         article.is_admin = jsonObject.optBoolean("is_admin", false);
         article.title = jsonObject.optString("title", "");
-        article.user = User.parse(jsonObject.optJSONObject("user"));
+        try {
+            article.user = User.parse(jsonObject.getJSONObject("user"));
+        } catch (JSONException e) {
+            article.user = User.parse(jsonObject.optString("user"));
+        }
         article.post_time = jsonObject.optInt("post_time", -1);
         article.board_name = jsonObject.optString("board_name", "");
         article.content = jsonObject.optString("content", "");
