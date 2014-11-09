@@ -61,6 +61,17 @@ Board board = boardService.getBoard("SL", params);
 
 可参考 [ParamDemo][8]
 
+### 错误提示
+
+当遇到论坛的内部错误时（例如帖子已被删除、已经投票后再次投票等），API会返回一个包含错误信息的JSON，会作为NForumException抛出，例如：
+
+```java
+com.dss886.nForumSDK.http.NForumException: 你已经投过票了
+at com.dss886.nForumSDK.http.PostMethod.postJSON(PostMethod.java:83)
+at com.dss886.nForumSDK.service.VoteService.vote(VoteService.java:91)
+at com.dss886.nForumSDKDemo.Main.main(Main.java:26)
+```
+
 ### 上传文件
 
 //TODO
