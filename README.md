@@ -21,13 +21,13 @@ Board board = boardService.getBoard("SL", new ParamOption());
 LogUtils.d("Board name", board.name);
 ```
 
-请注意，虎踞龙盘和nForum的测试站点不需要appkey，但是北邮人论坛是需要appkey的，此时需要使用可以传入appkey的构造函数创建nForumSDK对象：
+请注意，天地人大和nForum的测试站点不需要appkey，但是北邮人论坛是需要appkey的，此时需要使用可以传入appkey的构造函数创建nForumSDK对象：
 
 ```java
 NForumSDK nSDK = new NForumSDK(Host.HOST_BYR, "yourAppkey", "username", "password");
 ```
 
-可参考[GetDemo][7]
+可参考 [GetDemo][7]
 
 ### 数据结构
 
@@ -59,7 +59,7 @@ ParamOption params = new ParamOption()
 Board board = boardService.getBoard("SL", params);
 ```
 
-可参考[ParamDemo][8]
+可参考 [ParamDemo][8]
 
 ### 上传文件
 
