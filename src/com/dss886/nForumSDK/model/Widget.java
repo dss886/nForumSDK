@@ -57,9 +57,11 @@ public class Widget {
         widget.name = jsonObject.optString("name", "");
         widget.title = jsonObject.optString("title", "");
         JSONArray jsonArticles = jsonObject.optJSONArray("article");
-        for(int i = 0; i < jsonArticles.length(); i++){
-        	widget.articles.add(Article.parse(jsonArticles.optJSONObject(i)));
-		}
+        if (jsonArticles != null) {
+            for(int i = 0; i < jsonArticles.length(); i++){
+                widget.articles.add(Article.parse(jsonArticles.optJSONObject(i)));
+            }
+        }
         return widget;
-	}
+    }
 }

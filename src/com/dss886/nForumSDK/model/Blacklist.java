@@ -51,9 +51,11 @@ public class Blacklist {
         }
         Blacklist blacklist = new Blacklist();
         JSONArray jsonUsers = jsonObject.optJSONArray("user");
-        for(int i = 0; i < jsonUsers.length(); i++){
-        	blacklist.users.add(User.parse(jsonUsers.optJSONObject(i)));
-		}
+        if (jsonUsers != null) {
+            for(int i = 0; i < jsonUsers.length(); i++){
+                blacklist.users.add(User.parse(jsonUsers.optJSONObject(i)));
+            }
+        }
         blacklist.pagination = Pagination.parse(jsonObject.optJSONObject("pagination"));
         return blacklist;
 	}

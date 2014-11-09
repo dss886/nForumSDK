@@ -100,9 +100,11 @@ public class Refer {
         refer.is_read = jsonObject.optBoolean("has_attachment", true);
         refer.description = jsonObject.optString("description", "");
         JSONArray jsonRefers = jsonObject.optJSONArray("article");
-        for(int i = 0; i < jsonRefers.length(); i++){
-        	refer.refers.add(Refer.parse(jsonRefers.optJSONObject(i)));
-		}
+        if (jsonRefers != null) {
+            for(int i = 0; i < jsonRefers.length(); i++){
+                refer.refers.add(Refer.parse(jsonRefers.optJSONObject(i)));
+            }
+        }
         refer.pagination = Pagination.parse(jsonObject.optJSONObject("pagination"));
         refer.enable = jsonObject.optBoolean("enable", true);
         refer.new_count = jsonObject.optInt("new_count", -1);

@@ -16,13 +16,9 @@
 package com.dss886.nForumSDK.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.dss886.nForumSDK.util.ParamOption;
-import org.apache.http.NameValuePair;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 
 import com.dss886.nForumSDK.http.GetMethod;
@@ -72,37 +68,51 @@ public class VoteService {
 		NForumException, IOException {
 		String url = host + "vote/" + vid + returnFormat + appkey;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
-		return Vote.parse(getMethod.getJSON());
+        return Vote.parse(getMethod.getJSON());
 	}
-	
-	
-	/**
-	 * 投票操作
-	 * @param vid 投票vid
-	 * @param viids 所有提交的投票选项项的viid集合
-	 * @param is_multiple_choice 是否为单选，为true时，
-	 * @return 投票元数据
-	 * @throws JSONException
-	 * @throws NForumException
-	 * @throws IOException
-	 */
-	public Vote vote(int vid, int[] viids, boolean is_multiple_choice) throws
-		JSONException,NForumException, IOException {
-		String url = host + "vote/" + vid + returnFormat + appkey;
-        /* 因为多选时参数名均为vote[]，不能直接用基于Map的ParamOption */
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		if(is_multiple_choice){
-			params.add(new BasicNameValuePair("vote", viids[0]+""));
-		}else{
-            for (int viid : viids) {
-                params.add(new BasicNameValuePair("vote[]", viid + ""));
-            }
-		}
-		PostMethod postMethod = new PostMethod(httpClient, auth, url, new ParamOption(params));
-		return Vote.parse(postMethod.postJSON());
-	}
-	
-	/**
+
+
+    /**
+     * 投票操作（单选）
+     *
+     * @param vid  投票vid
+     * @param viid 所提交的投票选项
+     * @return 投票元数据
+     * @throws JSONException
+     * @throws NForumException
+     * @throws IOException
+     */
+    public Vote vote(int vid, int viid) throws
+            JSONException, NForumException, IOException {
+        String url = host + "vote/" + vid + returnFormat + appkey;
+        ParamOption params = new ParamOption()
+                .addParams("vote", viid);
+        PostMethod postMethod = new PostMethod(httpClient, auth, url, params);
+        return Vote.parse(postMethod.postJSON());
+    }
+
+    /**
+     * 投票操作（多选）
+     *
+     * @param vid   投票vid
+     * @param viids 所有提交的投票选项项的viid集合
+     * @return 投票元数据
+     * @throws JSONException
+     * @throws NForumException
+     * @throws IOException
+     */
+    public Vote vote(int vid, int[] viids) throws
+            JSONException, NForumException, IOException {
+        String url = host + "vote/" + vid + returnFormat + appkey;
+        ParamOption params = new ParamOption();
+        for (int i = 0; i < viids.length; i++) {
+            params.addParams("vote[" + i + "]", viids[i]);
+        }
+        PostMethod postMethod = new PostMethod(httpClient, auth, url, params);
+        return Vote.parse(postMethod.postJSON());
+    }
+
+    /**
 	 * 获取投票列表
 	 * @param category 投票列表类型，取值为me|join|list|new|hot|all，
 	 *		建议使用VoteService.CATEGORY_*常量
@@ -111,9 +121,9 @@ public class VoteService {
 	 * @throws NForumException
 	 * @throws IOException
 	 */
-	public Vote getVoteList(String category) throws JSONException,
+	public Vote getVoteList(String category, ParamOption params) throws JSONException,
 		NForumException, IOException {
-		String url = host + "vote/category/" + category + returnFormat + appkey;
+		String url = host + "vote/category/" + category + returnFormat + appkey + params;
 		GetMethod getMethod = new GetMethod(httpClient, auth, url);
 		return Vote.parse(getMethod.getJSON());
 	}

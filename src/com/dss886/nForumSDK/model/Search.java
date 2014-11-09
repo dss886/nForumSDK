@@ -61,21 +61,29 @@ public class Search {
         }
         Search search = new Search();
         JSONArray jsonSections = jsonObject.optJSONArray("section");
-        for(int i = 0; i < jsonSections.length(); i++){
-        	search.sections.add(Section.parse(jsonSections.optJSONObject(i)));
-		}
+        if (jsonSections != null) {
+            for(int i = 0; i < jsonSections.length(); i++){
+                search.sections.add(Section.parse(jsonSections.optJSONObject(i)));
+            }
+        }
         JSONArray jsonBoards = jsonObject.optJSONArray("board");
-        for(int i = 0; i < jsonBoards.length(); i++){
-        	search.boards.add(Board.parse(jsonBoards.optJSONObject(i)));
-		}
+        if (jsonBoards != null) {
+            for(int i = 0; i < jsonBoards.length(); i++){
+                search.boards.add(Board.parse(jsonBoards.optJSONObject(i)));
+            }
+        }
         JSONArray jsonArticles = jsonObject.optJSONArray("article");
-        for(int i = 0; i < jsonArticles.length(); i++){
-        	search.articles.add(Article.parse(jsonArticles.optJSONObject(i)));
-		}
+        if (jsonArticles != null) {
+            for(int i = 0; i < jsonArticles.length(); i++){
+                search.articles.add(Article.parse(jsonArticles.optJSONObject(i)));
+            }
+        }
         JSONArray jsonThreads = jsonObject.optJSONArray("threads");
-        for(int i = 0; i < jsonThreads.length(); i++){
-        	search.articles.add(Article.parse(jsonThreads.optJSONObject(i)));
-		}
+        if (jsonThreads != null) {
+            for(int i = 0; i < jsonThreads.length(); i++){
+                search.articles.add(Article.parse(jsonThreads.optJSONObject(i)));
+            }
+        }
         search.pagination = Pagination.parse(jsonObject.optJSONObject("pagination"));
         return search;
 	}

@@ -92,44 +92,62 @@ public class Vote {
         if (null == jsonObject) {
             return null;
         }
+
         Vote vote = new Vote();
-        vote.vid = jsonObject.optInt("vid", -1);
-        vote.title = jsonObject.optString("title", "");
-        vote.start = jsonObject.optInt("start", -1);
-        vote.end = jsonObject.optInt("end", -1);
-        vote.user_count = jsonObject.optInt("user_count", -1);
-        vote.vote_count = jsonObject.optInt("vote_count", -1);
-        vote.type = jsonObject.optInt("type", -1);
-        vote.limit = jsonObject.optInt("limit", -1);
-        vote.aid = jsonObject.optInt("aid", -1);
-        vote.is_end = jsonObject.optBoolean("is_end", false);
-        vote.is_deleted = jsonObject.optBoolean("is_deleted", false);
-        vote.is_result_voted = jsonObject.optBoolean("is_result_voted", false);
-        vote.user = User.parse(jsonObject.optJSONObject("user"));
-        JSONArray jsonOptions = jsonObject.optJSONArray("options");
-    	for(int i = 0; i < jsonOptions.length(); i++){
-    		vote.options.add(VoteOption.parse(jsonOptions.optJSONObject(i)));
-    	}
+        JSONObject jsonVote = jsonObject.optJSONObject("vote");
+        if (jsonVote != null) {
+            vote.vid = jsonVote.optInt("vid", -1);
+            vote.title = jsonVote.optString("title", "");
+            vote.start = jsonVote.optInt("start", -1);
+            vote.end = jsonVote.optInt("end", -1);
+            vote.user_count = jsonVote.optInt("user_count", -1);
+            vote.vote_count = jsonVote.optInt("vote_count", -1);
+            vote.type = jsonVote.optInt("type", -1);
+            vote.limit = jsonVote.optInt("limit", -1);
+            vote.aid = jsonVote.optInt("aid", -1);
+            vote.is_end = jsonVote.optBoolean("is_end", false);
+            vote.is_deleted = jsonVote.optBoolean("is_deleted", false);
+            vote.is_result_voted = jsonVote.optBoolean("is_result_voted", false);
+            vote.user = User.parse(jsonVote.optJSONObject("user"));
+            JSONArray jsonOptions = jsonVote.optJSONArray("options");
+            if (jsonOptions != null) {
+                for(int i = 0; i < jsonOptions.length(); i++){
+                    vote.options.add(VoteOption.parse(jsonOptions.optJSONObject(i)));
+                }
+            }
+            vote.is_voted = jsonVote.optBoolean("voted", true);
+            if(vote.is_voted){
+                vote = parseVoted(jsonVote, vote);
+            }else{
+                vote.user_vote_time = -1;
+            }
+        }
     	JSONArray jsonVotes = jsonObject.optJSONArray("votes");
-        for(int i = 0; i < jsonVotes.length(); i++){
-        	vote.votes.add(Vote.parse(jsonVotes.optJSONObject(i)));
-		}
+        if (jsonVotes != null) {
+            for(int i = 0; i < jsonVotes.length(); i++) {
+                JSONObject tempVote = new JSONObject();
+                try {
+                    /* 为了与那个蛋疼的API返回格式一致，在外面套一个object */
+                    tempVote.put("vote",jsonVotes.optJSONObject(i));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                vote.votes.add(Vote.parse(tempVote));
+            }
+        }
         vote.pagination = Pagination.parse(jsonObject.optJSONObject("pagination"));
-    	
-    	vote.is_voted = jsonObject.optBoolean("voted", true);
-    	if(vote.is_voted){
-    		vote.user_vote_time = jsonObject.optJSONObject("voted").optInt("time", -1);
-    		JSONArray jsonUserVotedOptions = jsonObject.optJSONObject("voted").optJSONArray("viid");
-    		for(int i = 0; i < jsonUserVotedOptions.length(); i++){
-    			try {
-					vote.user_voted_options.add(VoteOption.parse(jsonUserVotedOptions.get(i).toString()));
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-    		}
-    	}else{
-    		vote.user_vote_time = -1;
-    	}
         return vote;
 	}
+    private static Vote parseVoted (JSONObject jsonObject, Vote vote) {
+        vote.user_vote_time = jsonObject.optJSONObject("voted").optInt("time", -1);
+        JSONArray jsonUserVotedOptions = jsonObject.optJSONObject("voted").optJSONArray("viid");
+        for(int i = 0; i < jsonUserVotedOptions.length(); i++){
+            try {
+                vote.user_voted_options.add(VoteOption.parse(jsonUserVotedOptions.get(i).toString()));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return vote;
+    }
 }

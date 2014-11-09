@@ -49,7 +49,7 @@ public class VoteOption {
         }
         VoteOption voteOption = new VoteOption();
         voteOption.viid = jsonObject.optInt("viid", -1);
-        voteOption.label = jsonObject.optString("user_name", "");
+        voteOption.label = jsonObject.optString("label", "");
         voteOption.num = jsonObject.optInt("num", -1);
         return voteOption;
 	}

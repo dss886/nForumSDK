@@ -50,9 +50,11 @@ public class Attachment {
         }
         Attachment att = new Attachment();
         JSONArray jsonFiles = jsonObject.optJSONArray("file");
-        for(int i = 0; i < jsonFiles.length(); i++){
-        	att.file.add(File.parse(jsonFiles.optJSONObject(i)));
-		}
+        if (jsonFiles != null) {
+            for(int i = 0; i < jsonFiles.length(); i++){
+                att.file.add(File.parse(jsonFiles.optJSONObject(i)));
+            }
+        }
         att.remain_space = jsonObject.optString("remain_space", "");
         att.remain_count = jsonObject.optInt("remain_count", -1);
         return att;
