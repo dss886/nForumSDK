@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (C) 2010-2014 dss886
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -71,13 +71,13 @@ public class NForumSDK {
 	 * @param username 用户名
 	 * @param password 密码
 	 */
-	public NForumSDK(String host, String username, String password){
-		httpClient = HttpClients.createDefault();
-		auth = new String(Base64.encodeBase64((username + ":" + password).getBytes()));
-		this.host = host;
-		this.returnFormat = returnFormat + "?";
-		this.appkey = "";
-	}
+	public NForumSDK(String host, String username, String password) {
+        httpClient = HttpClients.createDefault();
+        auth = new String(Base64.encodeBase64((username + ":" + password).getBytes()));
+        this.host = host;
+        this.returnFormat = returnFormat + "?";
+        this.appkey = "";
+    }
 
 	/**
 	 * @return 用户接口封装对象
