@@ -17,7 +17,7 @@ public class Main {
 //        ParamDemo.useDefaultParams();
 //        ParamDemo.useCustomParams();
 
-        NForumSDK nSDK = new NForumSDK(Host.HOST_BYR, "78e223c052793f0b", "dss886", "@bqX&BGpkyMa");
+        NForumSDK nSDK = new NForumSDK(Host.HOST_BYR, "", "guest", "");
         VoteService voteService = nSDK.getVoteService();
         try {
 //            Vote vote = voteService.getVoteList(VoteService.CATEGORY_ALL, new ParamOption());
