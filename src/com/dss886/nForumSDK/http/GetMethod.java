@@ -19,11 +19,10 @@ import java.io.IOException;
 
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
-import org.apache.http.client.config.RequestConfig;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.entity.GzipDecompressingEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,23 +33,18 @@ import org.json.JSONObject;
  */
 public class GetMethod {
 	
-	private CloseableHttpClient httpClient;
+	private DefaultHttpClient httpClient;
 	private HttpGet httpGet;
 
-    public GetMethod(CloseableHttpClient httpClient, String auth, String url){
+    public GetMethod(DefaultHttpClient httpClient, String auth, String url){
 		this.httpClient = httpClient;
 		httpGet = new HttpGet(url);
-        RequestConfig config = RequestConfig.custom()
-                .setSocketTimeout(2000)
-                .setConnectTimeout(2000)
-                .build();
-        httpGet.setConfig(config);
 		httpGet.setHeader("Accept-Encoding", "gzip, deflate");
 		httpGet.setHeader("Authorization", "Basic " + auth);
 	}
 	
 	public JSONObject getJSON() throws JSONException, NForumException, IOException{
-        CloseableHttpResponse response = httpClient.execute(httpGet);
+        HttpResponse response = httpClient.execute(httpGet);
 		
 		int statusCode = response.getStatusLine().getStatusCode();
 		if (statusCode != 200)
@@ -65,7 +59,6 @@ public class GetMethod {
 			}
 		}
 		String result = ResponseProcessor.getStringFromResponse(response);
-        response.close();
 		httpGet.abort();
 		
 		JSONObject json = new JSONObject(result);

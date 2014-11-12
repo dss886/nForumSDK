@@ -18,7 +18,7 @@ package com.dss886.nForumSDK.service;
 import java.io.IOException;
 
 import com.dss886.nForumSDK.util.ParamOption;
-import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 
 import com.dss886.nForumSDK.http.GetMethod;
@@ -34,13 +34,13 @@ import com.dss886.nForumSDK.model.Favorite;
  */
 public class FavouriteService {
 
-	private CloseableHttpClient httpClient;
+	private DefaultHttpClient httpClient;
 	private String host;
 	private String returnFormat;
 	private String appkey;
 	private String auth; 
 	
-	public FavouriteService(CloseableHttpClient httpClient, String host,
+	public FavouriteService(DefaultHttpClient httpClient, String host,
 			String returnFormat, String appkey, String auth){
 		this.httpClient = httpClient;
 		this.host = host;

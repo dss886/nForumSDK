@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 
 import com.dss886.nForumSDK.util.ParamOption;
-import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 
 import com.dss886.nForumSDK.http.GetMethod;
@@ -34,13 +34,13 @@ import com.dss886.nForumSDK.model.Search;
  */
 public class SearchService {
 
-	private CloseableHttpClient httpClient;
+	private DefaultHttpClient httpClient;
 	private String host;
 	private String returnFormat;
 	private String appkey;
 	private String auth; 
 	
-	public SearchService(CloseableHttpClient httpClient, String host,
+	public SearchService(DefaultHttpClient httpClient, String host,
 			String returnFormat, String appkey, String auth){
 		this.httpClient = httpClient;
 		this.host = host;

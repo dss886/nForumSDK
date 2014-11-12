@@ -18,7 +18,7 @@ package com.dss886.nForumSDK.service;
 import java.io.IOException;
 
 import com.dss886.nForumSDK.util.ParamOption;
-import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 
 import com.dss886.nForumSDK.http.GetMethod;
@@ -37,13 +37,13 @@ public class ReferService {
     public static final String TYPE_AT = "at";
     public static final String TYPE_REPLY = "reply";
 
-	private CloseableHttpClient httpClient;
+	private DefaultHttpClient httpClient;
 	private String host;
 	private String returnFormat;
 	private String appkey;
 	private String auth; 
 	
-	public ReferService(CloseableHttpClient httpClient, String host,
+	public ReferService(DefaultHttpClient httpClient, String host,
 			String returnFormat, String appkey, String auth){
 		this.httpClient = httpClient;
 		this.host = host;

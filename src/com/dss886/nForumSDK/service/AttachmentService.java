@@ -19,9 +19,9 @@ import java.io.File;
 import java.io.IOException;
 
 import com.dss886.nForumSDK.util.ParamOption;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 
 import com.dss886.nForumSDK.http.GetMethod;
@@ -37,13 +37,13 @@ import com.dss886.nForumSDK.model.Attachment;
  */
 public class AttachmentService {
 	
-	private CloseableHttpClient httpClient;
+	private DefaultHttpClient httpClient;
 	private String host;
 	private String returnFormat;
 	private String appkey;
 	private String auth; 
 	
-	public AttachmentService(CloseableHttpClient httpClient, String host,
+	public AttachmentService(DefaultHttpClient httpClient, String host,
 			String returnFormat, String appkey, String auth){
 		this.httpClient = httpClient;
 		this.host = host;

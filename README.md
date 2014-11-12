@@ -3,7 +3,12 @@ nForumSDK
 
 ### 基本说明
 
-本项目是基于[nForum API][1]编写的的SDK，用于开发Java以及Android应用。经测试适用于[北邮人论坛][2]和[天地人大][3]。[虎踞龙盘][4]虽然使用了nForum的Web页面，但是并未使用nForumAPI，不适用本SDK。[水木社区][5]的API经过较大程度的定制，可能某些功能并不适用，请使用者自行进行测试。
+本项目是基于[nForum API][1]编写的的SDK，用于开发Java以及Android应用。经测试适用于[北邮人论坛][2]和[天地人大][3]。
+
++ [测试站点]部署有最新的nForum API版本，在取得appkey前可用此站点进行测试；
++ [虎踞龙盘][4]虽然使用了nForum的Web页面，但是并未使用nForumAPI，不适用本SDK；
++ [水木社区][5]的API经过较大程度的定制，可能某些功能并不适用；
++ 根据站点的设置不同，某些功能可能不可用，比如[北邮人论坛][2]使用API发文时无法显示签名档；
 
 ### 快速上手
 
@@ -90,3 +95,4 @@ at com.dss886.nForumSDKDemo.Main.main(Main.java:26)
 [6]:http://www.dss886.com/
 [7]:https://github.com/dss886/nForumSDK/blob/master/src/com/dss886/nForumSDKDemo/GetDemo.java
 [8]:https://github.com/dss886/nForumSDK/blob/master/src/com/dss886/nForumSDKDemo/ParamDemo.java
+[9]:http://nforum.byr.edu.cn/byr/#!default
