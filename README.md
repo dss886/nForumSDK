@@ -1,6 +1,12 @@
 nForumSDK
 =========
 
+### Deprecated
+
+北邮人论坛发布了基于OAuth2的新版API，见[北邮人开放平台](http://developers.byr.cn/)
+
+添加了部分独有接口，同时发布了官方SDK，因此本项目不再更新和维护
+
 ### 基本说明
 
 本项目是基于[nForum API][1]编写的的SDK，用于开发Java以及Android应用。经测试适用于[北邮人论坛][2]和[天地人大][3]。
